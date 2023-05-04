@@ -61,14 +61,14 @@ function App() {
       let wave;
       p5.translate(window.innerWidth / 2, window.innerHeight / 2);
 
-      p5.translate(-(text.length-1)*fontSize.value()/2,0);
+      p5.translate(-(text.length - 1) * fontSize.value() / 2,0);
 
       for(var i = 0; i < text.length; i++){
-        wave = p5.sin(p5.frameCount*speed.value() + i*waveLength.value()) * amplitude.value();
+        wave = p5.sin(p5.frameCount * speed.value() + i * waveLength.value()) * amplitude.value();
         p5.fill(0);
         
         p5.push();
-        p5.translate(i*fontSize.value(), 0);
+        p5.translate(i * fontSize.value(), 0);
         p5.text(text.charAt(i), 0, wave);
         p5.pop();
       }
