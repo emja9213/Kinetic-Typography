@@ -2,17 +2,23 @@ import './App.css';
 import Sketch from 'react-p5'
 
 
-let tanRotCheckbox, waveCheckbox, input, text, speed, fontSize, amplitude, waveLength;
+let input, text, speed, fontSize, amplitude, waveLength, effectSelector;
+const effectActions = [
+  { value: 'wave', label: 'Wave Effect' },
+  { value: 'tanRot', label: 'Tan Rotation Effect' },
+];
 
 function App() {
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
     
-    tanRotCheckbox = p5.createCheckbox('Tan Rotation Effect', false);
-    tanRotCheckbox.position(0, 0);
-
-    waveCheckbox = p5.createCheckbox('Wave Effect', true);
-    waveCheckbox.position(0, 30);
+    effectSelector = p5.createSelect();
+    effectSelector.position(5, 30);
+    // generate new option for each value in effectActions array
+    effectActions.forEach(option => {
+      effectSelector.option(option.label, option.value);
+    });
+    effectSelector.changed(effectHandler.bind(null, effectSelector, p5));
 
     input = p5.createInput('Kinetic Typography');
     input.position(5, 60);
@@ -37,13 +43,10 @@ function App() {
     p5.angleMode(p5.DEGREES);
   }
 
-  const draw = p5 => {
-    p5.background(255);
-
-    text = input.value();
-    p5.textSize(fontSize.value());
+  // Check for selected effect animation and apply it
+  function effectHandler(effectSelector, p5) {
     
-    if (tanRotCheckbox.checked()) {
+    if (effectSelector.selected() === "tanRot") {
       for (var i = 0; i < 14; i++) {
         p5.push();
 
@@ -54,19 +57,19 @@ function App() {
         let spacing = fontSize.value();
         p5.text(text, window.innerWidth / 2, window.innerHeight / 2 - i * spacing);
         p5.text(text, window.innerWidth / 2, window.innerHeight / 2 + i * spacing);
-        
+
         p5.pop();
       }
-    } else if (waveCheckbox.checked()) {
+    } else if (effectSelector.selected() === "wave") {
       let wave;
       p5.translate(window.innerWidth / 2, window.innerHeight / 2);
 
-      p5.translate(-(text.length - 1) * fontSize.value() / 2,0);
+      p5.translate(-(text.length - 1) * fontSize.value() / 2, 0);
 
-      for(var i = 0; i < text.length; i++){
+      for (i = 0; i < text.length; i++) {
         wave = p5.sin(p5.frameCount * speed.value() + i * waveLength.value()) * amplitude.value();
         p5.fill(0);
-        
+
         p5.push();
         p5.translate(i * fontSize.value(), 0);
         p5.text(text.charAt(i), 0, wave);
@@ -76,6 +79,17 @@ function App() {
       p5.text(text, window.innerWidth / 2, window.innerHeight / 2);
     }
   }
+
+  const draw = p5 => {
+    p5.background(255);
+
+    text = input.value();
+    p5.textSize(fontSize.value());
+
+    // call effectHandler to draw the text
+    effectHandler(effectSelector, p5);
+}
+    
 
   const windowResized = p5 => {
     p5.resizeCanvas(window.innerWidth, window.innerHeight);
