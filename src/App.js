@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import Sketch from 'react-p5'
 import '@yaireo/ui-range';
