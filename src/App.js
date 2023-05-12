@@ -30,6 +30,7 @@ function App() {
     // add div to contain sliders 
     const sliderDiv = p5.createDiv();
     sliderDiv.addClass('range-slider');
+    sliderDiv.child(p5.createP('Font Size').style('padding','1.5rem 0.7rem'));
     sliderDiv.position(5, 115);
     
     // create sliders for each effect parameter
@@ -42,7 +43,7 @@ function App() {
     sliderDiv.child(fontSize);
     
     
-    p5.createP('Font Size').position(50, 70);
+    // p5.createP('Font Size');
 
 
     // create output element using p5 dom library
