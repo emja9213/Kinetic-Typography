@@ -1,5 +1,6 @@
 import './App.css';
 import Sketch from 'react-p5'
+import '@yaireo/ui-range';
 
 
 let input, text, speed, fontSize, amplitude, waveLength, effectSelector, selectedWeight;
@@ -26,15 +27,35 @@ function App() {
     input = p5.createInput('Kinetic Typography');
     input.position(5, 60);
 
+    // add div to contain sliders 
+    const sliderDiv = p5.createDiv();
+    sliderDiv.addClass('range-slider');
+    sliderDiv.position(5, 115);
+    
     // create sliders for each effect parameter
-
+    
     fontSize = p5.createSlider(32, 256, 64, 2);
-    fontSize.position(5, 105);
+    // fontSize.position(5, 125);
+    fontSize.addClass('range');    
+    fontSize.attribute('oninput',`this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify(this.value))`);
+    sliderDiv.style('--min','32','--max','256','--value','64','--text-value','64','width','400px');
+    sliderDiv.child(fontSize);
+    
+    
     p5.createP('Font Size').position(50, 70);
+
+
+    // create output element using p5 dom library
+    const fontSliderOutput = p5.createElement('output');
+    sliderDiv.child(fontSliderOutput);
+
+    const progressDiv = p5.createDiv();
+    progressDiv.addClass('range-slider__progress');
+    sliderDiv.child(progressDiv);
 
     // create slider base on font weights array
     const fontWeightSelector = p5.createSelect();
-    fontWeightSelector.position(5, 270);
+    fontWeightSelector.position(5, 370);
     fontWeights.forEach(option => {
       fontWeightSelector.option(option, option);
     });
@@ -44,16 +65,16 @@ function App() {
     });
 
     speed = p5.createSlider(0.1, 20, 3, 0.1);
-    speed.position(5, 150);
-    p5.createP('Speed').position(60, 115);
+    speed.position(5, 250);
+    p5.createP('Speed').position(60, 215);
 
     amplitude = p5.createSlider(1, 512, 16, 1);
     amplitude.position(5, 195);
-    p5.createP('Amplitude').position(50, 160);
+    p5.createP('Amplitude').position(50, 260);
 
     waveLength = p5.createSlider(0, 128, 16, 1);
-    waveLength.position(5, 240);
-    p5.createP('Wave Length').position(40, 205);
+    waveLength.position(5, 340);
+    p5.createP('Wave Length').position(40, 305);
 
     p5.textAlign(p5.CENTER);
     p5.angleMode(p5.DEGREES);

@@ -1,3 +1,5 @@
+@import '@yaireo/ui-range';
+
 .App {
   text-align: center;
 }
@@ -35,4 +37,17 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Range Slider Styling */
+
+.range-slider {
+  --min: 32;
+  --max: 256;
+  --value: 64;
+  --primary-color: #0366d6;
+  --step: 2;
+  --show-min-max: block;
+
+  width: 13rem;
 }
