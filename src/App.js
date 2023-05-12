@@ -2,15 +2,18 @@ import './App.css';
 import Sketch from 'react-p5'
 
 
-let input, text, speed, fontSize, amplitude, waveLength, effectSelector;
+let input, text, speed, fontSize, amplitude, waveLength, effectSelector, selectedWeight;
 const effectActions = [
   { value: 'wave', label: 'Wave Effect' },
   { value: 'tanRot', label: 'Tan Rotation Effect' },
 ];
+const fontWeights = ['p5.NORMAL','p5.ITALIC','p5.BOLD','p5.BOLDITALIC'];
 
 function App() {
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
+    const cairoPlayFont = p5.loadFont('/fonts/Cairo_Play/CairoPlay-VariableFont_slnt,wght.ttf');
+    p5.textFont(cairoPlayFont);
     
     effectSelector = p5.createSelect();
     effectSelector.position(5, 30);
@@ -23,9 +26,22 @@ function App() {
     input = p5.createInput('Kinetic Typography');
     input.position(5, 60);
 
-    fontSize = p5.createSlider(8, 128, 64, 2);
+    // create sliders for each effect parameter
+
+    fontSize = p5.createSlider(32, 256, 64, 2);
     fontSize.position(5, 105);
     p5.createP('Font Size').position(50, 70);
+
+    // create slider base on font weights array
+    const fontWeightSelector = p5.createSelect();
+    fontWeightSelector.position(5, 270);
+    fontWeights.forEach(option => {
+      fontWeightSelector.option(option, option);
+    });
+    fontWeightSelector.changed(() => {
+      p5.textStyle(fontWeightSelector.value());
+      selectedWeight = fontWeightSelector.value();
+    });
 
     speed = p5.createSlider(0.1, 20, 3, 0.1);
     speed.position(5, 150);
@@ -72,7 +88,7 @@ function App() {
 
         p5.push();
         p5.translate(i * fontSize.value(), 0);
-        p5.text(text.charAt(i), 0, wave);
+        p5.text(text.charAt(i), 0, wave).textStyle(selectedWeight);
         p5.pop();
       }
     } else {
