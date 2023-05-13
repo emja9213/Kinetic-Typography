@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 
 let input, text, speed, speedSliderDiv, fontSize, fontSizeSliderDiv, amplitude, amplitudeSliderDiv, waveLength,waveLengthSliderDiv, effectSelector, selectedWeight;
+let parametersContainer;
 const effectActions = [
   { value: 'wave', label: 'Wave Effect' },
   { value: 'tanRot', label: 'Tan Rotation Effect' },
@@ -18,6 +19,8 @@ function App() {
     p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
     const cairoPlayFont = p5.loadFont('/fonts/Cairo_Play/CairoPlay-VariableFont_slnt,wght.ttf');
     p5.textFont(cairoPlayFont);
+    parametersContainer = p5.createDiv();
+    parametersContainer.id('parameters-container');
     
     effectSelector = p5.createSelect();
     effectSelector.position(5, 30);
@@ -26,12 +29,14 @@ function App() {
       effectSelector.option(option.label, option.value);
     });
     effectSelector.changed(effectHandler.bind(null, effectSelector, p5));
-
+    
     input = p5.createInput('Kinetic Typography');
     input.position(5, 60);
     
     const sliderDivXPos = 5;
     const sliderDivYPos = 115;
+    parametersContainer.style('display', 'flex','position','inherit');
+
 
     //  Generate range sliders for each effect parameter
 
@@ -48,7 +53,7 @@ function App() {
     let waveLengthRangeDetails = {label: 'Wave Length', min: 0, max: 128, defaultValue: 16, step: 1};
     [waveLengthSliderDiv, waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);
 
-    hideSliders();
+    // hideSliders();
     
   
     p5.textAlign(p5.CENTER);
@@ -61,6 +66,7 @@ function App() {
     */
     function createRangeSlider(rangeDetails, posX, posY) {
       const sliderDiv = p5.createDiv();
+      sliderDiv.parent(parametersContainer);
       // convert label to camel case
       const classLabel = _.camelCase(rangeDetails.label);
       sliderDiv.addClass(`range-slider ${classLabel}-range-slider'`);
@@ -101,6 +107,7 @@ function App() {
       amplitudeSliderDiv.show();
       waveLengthSliderDiv.show();
     }
+    // parametersContainer.hide();
     
   }
 
