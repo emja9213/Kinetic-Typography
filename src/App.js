@@ -12,6 +12,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.input;
     this.text;
     this.speed;
@@ -55,15 +56,15 @@ class App extends React.Component {
   }
 
 
-  // preload = (p5) => {
-  //   console.log('preload function started');
-  //   p5.soundFormats('mp3', 'ogg');
-  //   this.song = p5.loadSound('media/sound/The_Flashbulb_-_Warm_Hands_In_Cold_Fog');
-  //   console.log(this.song);
-  //   console.log('preload function ran successfully');
-  //   // sleep for 1 second to allow song to load
-  //   // new Promise(resolve => setTimeout(resolve, 1000));
-  // }
+  preload = (p5) => {
+    console.log('preload function started');
+    // p5.soundFormats('mp3', 'ogg');
+    // this.song = p5.loadSound('media/sound/The_Flashbulb_-_Warm_Hands_In_Cold_Fog');
+    // console.log(this.song);
+    console.log('preload function ran successfully');
+    // sleep for 1 second to allow song to load
+    // new Promise(resolve => setTimeout(resolve, 1000));
+  }
 
 
 
@@ -83,8 +84,6 @@ class App extends React.Component {
     p5.textFont(cairoPlayFont);
     this.parametersContainer = p5.createDiv().id('parameters-container');
     // this.parametersContainer.id('parameters-container');
-    // preload(p5);
-    // song.play();
 
     this.effectSelector = p5.createSelect();
     this.effectSelector.position(5, 30);
@@ -182,9 +181,6 @@ class App extends React.Component {
   }
 
 
-
-
-
   draw = (p5) => {
     p5.background(255);
 
@@ -216,7 +212,7 @@ class App extends React.Component {
     p5.fill(0);
     p5.push();
     p5.translate(i * this.fontSize.value(), 0);
-    p5.text(this.text.charAt(i), 0, this.wave).textStyle(this.selectedWeight);
+    p5.text(this.text.charAt(i), 0, wave).textStyle(this.selectedWeight);
     p5.pop();
   }
 }
