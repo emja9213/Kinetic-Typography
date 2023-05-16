@@ -58,18 +58,27 @@ class App extends React.Component {
   // preload = (p5) => {
   //   console.log('preload function started');
   //   p5.soundFormats('mp3', 'ogg');
-  //   this.song = p5.loadSound('https://freesound.org/data/previews/612/612610_5674468-lq');
+  //   this.song = p5.loadSound('media/sound/The_Flashbulb_-_Warm_Hands_In_Cold_Fog');
   //   console.log(this.song);
   //   console.log('preload function ran successfully');
   //   // sleep for 1 second to allow song to load
-  //   new Promise(resolve => setTimeout(resolve, 1000));
-  //   this.song.play();
+  //   // new Promise(resolve => setTimeout(resolve, 1000));
   // }
 
 
 
   setup = (p5, canvasParentRef) => {
-    p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
+    const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
+    p5.soundFormats('mp3', 'ogg');
+    this.song = p5.loadSound('https://freesound.org/data/previews/612/612610_5674468-lq');
+    console.log(this.song);
+    cnv.mousePressed(() => {
+      if (this.song.isPlaying()) {
+        this.song.pause();
+      } else {
+        this.song.loop();
+      }
+    });
     const cairoPlayFont = p5.loadFont('/fonts/Cairo_Play/CairoPlay-VariableFont_slnt,wght.ttf');
     p5.textFont(cairoPlayFont);
     this.parametersContainer = p5.createDiv().id('parameters-container');
@@ -124,8 +133,8 @@ class App extends React.Component {
       progressDiv.addClass('range-slider__progress');
       progressDiv.style('width', '13rem');
       sliderDiv.child(progressDiv);
-      console.log(sliderDiv);
-      console.log(rangeDetails.label);
+      // console.log(sliderDiv);
+      // console.log(rangeDetails.label);
 
       return [sliderDiv, slider];
     };
@@ -150,7 +159,7 @@ class App extends React.Component {
 
     let fontSizeRangeDetails = {label: 'Font Size', min: 32, max: 256, defaultValue: 64, step: 2};
     [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
-    console.log(this.fontSizeSliderDiv);
+    // console.log(this.fontSizeSliderDiv);
 
     let speedRangeDetails = {label: 'Speed', min: 0.1, max: 20, defaultValue: 3, step: 0.1};
     [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, 5, sliderDivYPos + 125);
