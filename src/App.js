@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Sketch from 'react-p5'
 import 'p5/lib/addons/p5.sound';
@@ -13,6 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.menuOpen;
     this.input;
     this.text;
     this.speed;
@@ -55,6 +56,23 @@ class App extends React.Component {
     }
   }
 
+  hideMenuElements = () => {
+    this.effectSelector.hide();
+    this.input.hide();
+    this.fontSizeSliderDiv.hide();
+    this.speedSliderDiv.hide();
+    this.amplitudeSliderDiv.hide();
+    this.waveLengthSliderDiv.hide();
+  }
+
+  showMenuElements = () => {
+    this.effectSelector.show()
+    this.input.show();
+    this.fontSizeSliderDiv.show();
+    this.speedSliderDiv.show();
+    this.amplitudeSliderDiv.show();
+    this.waveLengthSliderDiv.show();
+  }
 
   preload = (p5) => {
     console.log('preload function started');
@@ -70,6 +88,8 @@ class App extends React.Component {
 
   setup = (p5, canvasParentRef) => {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
+    cnv.style('display', 'block');
+    this.menuOpen = true; 
     p5.soundFormats('mp3', 'ogg');
     this.song = p5.loadSound('https://freesound.org/data/previews/612/612610_5674468-lq');
     console.log(this.song);
@@ -153,7 +173,6 @@ class App extends React.Component {
       this.waveLengthSliderDiv.show();
     }
 
-
     //  Generate range sliders for each effect parameter
 
     let fontSizeRangeDetails = {label: 'Font Size', min: 32, max: 256, defaultValue: 64, step: 2};
@@ -177,20 +196,64 @@ class App extends React.Component {
     
     
     // parametersContainer.hide();
-    
   }
-
 
   draw = (p5) => {
     p5.background(255);
+    p5.noStroke();    
 
     this.text = this.input.value();
     p5.textSize(this.fontSize.value());
-
     // call effectHandler to draw the text
+    p5.push();
     this.effectHandler(this.effectSelector, p5);
-  }
+    p5.pop();
+
+    // draw the menu and show its elements, or just the open-button if its closed.
+    if (this.menuOpen) {
+      p5.fill(230, 200);
+      p5.rect(0, 0, 255, window.innerHeight);
+      // Color the close-button if hovered, then check if it is clicked.
+      if ((p5.mouseX > 200) && (p5.mouseX < 255) && (p5.mouseY > 0) && (p5.mouseY < 35)){ 
+        p5.fill(130);
+        if (p5.mouseIsPressed) {
+          this.menuOpen = false;
+          this.hideMenuElements();
+        }
+      }
+      else {
+        p5.fill(180);
+      }
+      // draw "close" button.
+      p5.rect(200, 0, 55, 35, 0, 0, 0, 10);
+      p5.fill(255);
+      p5.textSize(32);
+      p5.text('x', 228, 25);
+    } else {
+      // Color the open-button if hovered, then check if it is clicked.
+      if ((p5.mouseX > 0) && (p5.mouseX < 55) && (p5.mouseY > 0) && (p5.mouseY < 35)){
+        p5.fill(130);
+        if (p5.mouseIsPressed) {
+          this.menuOpen = true;
+          this.showMenuElements();
+        }
+      }
+      else {
+        p5.fill(180);
+      }
+      // draw "open" button.
+      p5.rect(0, 0, 55, 35, 0, 0, 10, 0);
+      p5.fill(255);
+      p5.textSize(32);
+      p5.text('>', 27, 25);
+    }
     
+  }
+
+  mouseReleased() {
+    return true;
+  }
+
   windowResized = (p5) => {
     p5.resizeCanvas(window.innerWidth, window.innerHeight);
   }
@@ -203,6 +266,7 @@ class App extends React.Component {
 
   waveEffect = (p5) => {
   let wave;
+
   p5.translate(window.innerWidth / 2, window.innerHeight / 2);
 
   p5.translate(-(this.text.length - 1) * this.fontSize.value() / 2, 0);
