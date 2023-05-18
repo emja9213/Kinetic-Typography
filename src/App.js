@@ -26,10 +26,14 @@ class App extends React.Component {
     this.effectSelector;
     this.selectedWeight;
     this.parametersContainer;
+    this.fontWeight;
+    this.fontWeightSliderDiv;
+    this.textDiv;
     this.effectActions = [
       { value: 'wave', label: 'Wave Effect' },
       { value: 'tanRot', label: 'Tan Rotation Effect' },
       { value: 'interactiveMouse', label: 'Interactive Mouse' },
+      { value: 'normalText', label: 'Normal Text' },
       { value: 'none', label: 'Blank Canvas' }
     ];
     this.fontWeights = ['p5.NORMAL','p5.ITALIC','p5.BOLD','p5.BOLDITALIC'];
@@ -46,7 +50,10 @@ class App extends React.Component {
       this.waveEffect(p5); // apply the wave effect to the text
     } else if (effectSelector.selected() === "interactiveMouse") {
       this.interactiveMouseEffect(p5); // apply the interactive mouse effect to the text 
-    } else if (effectSelector.selected() === "none") {
+    } else if (effectSelector.selected() === "normalText") {
+      this.normalTextEffect(p5); // apply the normal text effect to the text
+    }
+    else if (effectSelector.selected() === "none") {
       // do nothing for now (blank canvas)
       void(0);
     }
@@ -57,13 +64,11 @@ class App extends React.Component {
 
 
   preload = (p5) => {
-    console.log('preload function started');
+
+    // preload sound file so it can be played later
     // p5.soundFormats('mp3', 'ogg');
-    // this.song = p5.loadSound('media/sound/The_Flashbulb_-_Warm_Hands_In_Cold_Fog');
-    // console.log(this.song);
-    console.log('preload function ran successfully');
-    // sleep for 1 second to allow song to load
-    // new Promise(resolve => setTimeout(resolve, 1000));
+    // // this.song = p5.loadSound('media/sound/The_Flashbulb_-_Warm_Hands_In_Cold_Fog');
+    // this.song = p5.loadSound('https://freesound.org/data/previews/612/612610_5674468-lq');
   }
 
 
@@ -71,16 +76,18 @@ class App extends React.Component {
   setup = (p5, canvasParentRef) => {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
     p5.soundFormats('mp3', 'ogg');
-    this.song = p5.loadSound('https://freesound.org/data/previews/612/612610_5674468-lq');
-    console.log(this.song);
-    cnv.mousePressed(() => {
-      if (this.song.isPlaying()) {
-        this.song.pause();
-      } else {
-        this.song.loop();
-      }
-    });
+    
+    // play song on click of canvas element
+    // cnv.mousePressed(() => {
+    //   if (this.song.isPlaying()) {
+    //     this.song.pause();
+    //   } else {
+    //     this.song.loop();
+    //   }
+    // });
+
     const cairoPlayFont = p5.loadFont('/fonts/Cairo_Play/CairoPlay-VariableFont_slnt,wght.ttf');
+    
     p5.textFont(cairoPlayFont);
     this.parametersContainer = p5.createDiv().id('parameters-container');
     // this.parametersContainer.id('parameters-container');
@@ -169,6 +176,9 @@ class App extends React.Component {
     let waveLengthRangeDetails = {label: 'Wave Length', min: 0, max: 128, defaultValue: 16, step: 1};
     [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);
 
+    let fontWeightRangeDetails = {label: 'Font Weight', min: 200, max: 1000, defaultValue: 200, step: 10};
+    [this.fontWeightSliderDiv, this.fontWeight] = createRangeSlider(fontWeightRangeDetails, 5, sliderDivYPos + 500);
+
     // hideSliders();
     
   
@@ -186,7 +196,6 @@ class App extends React.Component {
 
     this.text = this.input.value();
     p5.textSize(this.fontSize.value());
-
     // call effectHandler to draw the text
     this.effectHandler(this.effectSelector, p5);
   }
@@ -210,9 +219,12 @@ class App extends React.Component {
   for (var i = 0; i < this.text.length; i++) {
     wave = p5.sin(p5.frameCount * this.speed.value() + i * this.waveLength.value()) * this.amplitude.value();
     p5.fill(0);
+    // change stroke weight based on slider value
+    p5.strokeWeight(p5.map(p5.mouseX, 0, p5.width, 0, 8));
+    p5.stroke(0);
     p5.push();
     p5.translate(i * this.fontSize.value(), 0);
-    p5.text(this.text.charAt(i), 0, wave).textStyle(this.selectedWeight);
+    p5.text(this.text.charAt(i), 0, wave).textStyle(p5.BOLD);
     p5.pop();
   }
 }
@@ -257,10 +269,23 @@ interactiveMouseEffect = (p5) => {
   }
 }
 
+normalTextEffect = (p5) => {
+  p5.push();
+  this.textDiv = p5.createDiv(this.text);
+  this.textDiv.style('font-size', this.fontSize.value() + 'px');
+  this.textDiv.style('font-weight', this.fontWeight.value());
+  // this.textDiv.style('color', '#000');
+
+  this.textDiv.position(window.innerWidth / 2 - this.textDiv.size().width / 2, window.innerHeight / 2 - this.textDiv.size().height / 2);
+  p5.pop();
+  p5.redraw();
+
+}
+
   render() {
     return (
       <div className="App">
-        <Sketch setup={this.setup} draw={this.draw} windowResized={this.windowResized}/>
+        <Sketch preload={this.preload} setup={this.setup} draw={this.draw} windowResized={this.windowResized}/>
       </div>
     );
   }
