@@ -56,7 +56,7 @@ class App extends React.Component {
     }
   }
 
-  hideMenuElements = () => {
+  hideAllMenuElements = () => {
     this.effectSelector.hide();
     this.input.hide();
     this.fontSizeSliderDiv.hide();
@@ -64,8 +64,8 @@ class App extends React.Component {
     this.amplitudeSliderDiv.hide();
     this.waveLengthSliderDiv.hide();
   }
-
-  showMenuElements = () => {
+  // TODO functions for each only the sliders relevant for the current effect.
+  showAllMenuElements = () => {
     this.effectSelector.show()
     this.input.show();
     this.fontSizeSliderDiv.show();
@@ -213,36 +213,40 @@ class App extends React.Component {
     if (this.menuOpen) {
       p5.fill(230, 200);
       p5.rect(0, 0, 255, window.innerHeight);
+      let x1 = 200, x2 = 255, width = x2 - x1;
+      let y1 = 0, y2 = 35, height = y2 - y1;
       // Color the close-button if hovered, then check if it is clicked.
-      if ((p5.mouseX > 200) && (p5.mouseX < 255) && (p5.mouseY > 0) && (p5.mouseY < 35)){ 
+      if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){ 
         p5.fill(130);
         if (p5.mouseIsPressed) {
           this.menuOpen = false;
-          this.hideMenuElements();
+          this.hideAllMenuElements();
         }
       }
       else {
         p5.fill(180);
       }
       // draw "close" button.
-      p5.rect(200, 0, 55, 35, 0, 0, 0, 10);
+      p5.rect(x1, 0, width, height, 0, 0, 0, 10);
       p5.fill(255);
       p5.textSize(32);
       p5.text('x', 228, 25);
     } else {
+      let x1 = 0, x2 = 55, width = x2 - x1;
+      let y1 = 0, y2 = 35, height = y2 - y1;
       // Color the open-button if hovered, then check if it is clicked.
-      if ((p5.mouseX > 0) && (p5.mouseX < 55) && (p5.mouseY > 0) && (p5.mouseY < 35)){
+      if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){
         p5.fill(130);
         if (p5.mouseIsPressed) {
           this.menuOpen = true;
-          this.showMenuElements();
+          this.showAllMenuElements();
         }
       }
       else {
         p5.fill(180);
       }
       // draw "open" button.
-      p5.rect(0, 0, 55, 35, 0, 0, 10, 0);
+      p5.rect(x1, 0, width, height, 0, 0, 10, 0);
       p5.fill(255);
       p5.textSize(32);
       p5.text('>', 27, 25);
