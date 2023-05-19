@@ -28,6 +28,7 @@ class App extends React.Component {
     this.selectedWeight;
     this.parametersContainer;
     this.heat;
+    this.bgBrighten;
     this.effectActions = [
       { value: 'wave', label: 'Wave Effect' },
       { value: 'tanRot', label: 'Tan Rotation Effect' },
@@ -95,7 +96,8 @@ class App extends React.Component {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
     cnv.style('display', 'block');
     this.menuOpen = true; 
-    this.heat = 255;
+    this.heat = 0;
+    this.bgBrighten = true;
     p5.soundFormats('mp3', 'ogg');
     this.song = p5.loadSound('https://freesound.org/data/previews/612/612610_5674468-lq');
     this.hum = p5.loadSound('media/sound/hum.ogg');
@@ -338,34 +340,44 @@ heatEffect = (p5) => {
   p5.background(bgHeat);
 
   p5.fill(0);
-  // Measure how much mouse position changes and calculate Heat.
   p5.frameRate(60);
-  let xHeat = Math.round(Math.abs(p5.pmouseX - p5.mouseX) / 10);
-  let yHeat = Math.round(Math.abs(p5.pmouseY - p5.mouseY) / 10); 
+  // Measure how much mouse position changes and calculate heat.
+  let xHeat = Math.abs(Math.round((p5.pmouseX - p5.mouseX) / 10));
+  let yHeat = Math.abs(Math.round((p5.pmouseY - p5.mouseY) / 10));
   this.heat = this.heat + xHeat + yHeat;
 
   // Display values of x, y and total heat on screen. (Only used for development.)
-  // p5.text(xHeat, window.innerWidth / 3, window.innerHeight/4);
-  // p5.text(yHeat, window.innerWidth / 2, window.innerHeight/4);
+  // p5.text(xHeatAbs, window.innerWidth / 3, window.innerHeight/4);
+  // p5.text(yHeatAbs, window.innerWidth / 2, window.innerHeight/4);
   // p5.text(this.heat, window.innerWidth / 1.5, window.innerHeight/4);
 
-  // Turn on the humming noise.
+  // Turn on the humming noise and increase volume with heat.
   if (!this.hum.isPlaying()) { this.hum.loop(); }
   let volume = p5.map(this.heat, 0, 512, 0, 1, true);
   this.hum.setVolume(volume);
+  
+  if (this.bgBrighten) { p5.background(bgHeat + this.heat / 20); } // TODO add a checkbox to turn on/off.
 
-  // Draw text and glow (shadow).
+  // Draw text.
   p5.push();
-  p5.drawingContext.shadowBlur = 128;
+  let shadowStrength = 64; // TODO add a slider for shadowStrength.
+  p5.drawingContext.shadowBlur = shadowStrength;
   p5.drawingContext.shadowColor = p5.color(this.heat, 0, 0, this.heat);
+
   p5.fill(this.heat, 0, 0);
+  p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2);  
+
+  // Draw glow
+  p5.drawingContext.shadowBlur = shadowStrength / 2;
   p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2);
-  p5.drawingContext.shadowBlur = 64;
-  p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2);
+
+  p5.drawingContext.shadowBlur = shadowStrength / 4;
+  p5.text(this.text, window.innerWidth / 2 , window.innerHeight / 2);
   p5.pop();
 
   // Decay.
-  if (this.heat > 0) { this.heat = this.heat - 3; }
+  let decay = 2;
+  if (this.heat > 0) { this.heat = this.heat - decay; }
   // Bounds.
   if (this.heat < 0) { this.heat = 0; }
   if (this.heat > 255) { this.heat = 255; }
