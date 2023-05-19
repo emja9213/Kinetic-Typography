@@ -7,7 +7,6 @@ import _ from 'lodash';
 
 "use strict";
 
-
 class App extends React.Component {
 
   constructor(props) {
@@ -29,6 +28,9 @@ class App extends React.Component {
     this.parametersContainer;
     this.heat;
     this.bgBrighten;
+    this.fontColor;
+    this.fontShadowColor;
+    this.bgColorPicker;
     this.effectActions = [
       { value: 'wave', label: 'Wave Effect' },
       { value: 'tanRot', label: 'Tan Rotation Effect' },
@@ -82,7 +84,7 @@ class App extends React.Component {
 
   preload = (p5) => {
     console.log('preload function started');
-    p5.soundFormats('mp3', 'ogg');
+    // p5.soundFormats('mp3', 'ogg');
     // this.song = p5.loadSound('media/sound/The_Flashbulb_-_Warm_Hands_In_Cold_Fog');
     // console.log(this.song);
     console.log('preload function ran successfully');
@@ -94,6 +96,13 @@ class App extends React.Component {
 
   setup = (p5, canvasParentRef) => {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
+
+    this.bgColorPicker = p5.createColorPicker("ffffff");
+    // position color picker
+    this.bgColorPicker.position(40, 580);
+    // size color picker
+    this.bgColorPicker.size(25, 25);
+
     cnv.style('display', 'block');
     this.menuOpen = true; 
     this.heat = 0;
@@ -114,6 +123,9 @@ class App extends React.Component {
     p5.textFont(cairoPlayFont);
     this.parametersContainer = p5.createDiv().id('parameters-container');
     // this.parametersContainer.id('parameters-container');
+    
+    let backgroundColorPicker = p5.createColorPicker("white").parent(cnv);
+    backgroundColorPicker.position = (window.innerWidth / 2, window.innerWidth / 2);
 
     this.effectSelector = p5.createSelect();
     this.effectSelector.position(5, 30);
@@ -209,7 +221,7 @@ class App extends React.Component {
   }
 
   draw = (p5) => {
-    p5.background(255);
+    p5.background(this.bgColorPicker.color());
     p5.noStroke();    
 
     this.text = this.input.value();
@@ -353,7 +365,7 @@ heatEffect = (p5) => {
 
   // Turn on the humming noise and increase volume with heat.
   if (!this.hum.isPlaying()) { this.hum.loop(); }
-  let volume = p5.map(this.heat, 0, 512, 0, 1, true);
+  let volume = p5.map(this.heat, 0, 512, 0, 0.7, true);
   this.hum.setVolume(volume);
   
   if (this.bgBrighten) { p5.background(bgHeat + this.heat / 20); } // TODO add a checkbox to turn on/off.
