@@ -102,6 +102,39 @@ class App extends React.Component {
   setup = (p5, canvasParentRef) => {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
 
+    
+    const languages = [
+      { code: 'en', name: 'English'},
+      { code: 'sv', name: 'Svenska'}
+    ]
+    
+    const translations = {
+        'en': {
+          'language-selector': 'Choose language',
+          'font-size': 'Font Size',
+          'speed': 'Speed',
+          'amplitude': 'Amplitude',
+          'wave-length': 'Wave Length',
+          'wave-effect': 'Wave',
+          'tanrot-effect': 'Tan Rotation',
+          'interactive-mouse-effect': 'Interactive Mouse',
+          'neon-effect': 'Neon',
+          'blank-canvas': 'Blank Canvas'
+        },
+        'sv': {
+          'language-selector': 'Välj språk:',
+          'font-size': 'Textstorlek',
+          'speed': 'Hastighet',
+          'amplitude': 'Amplitud',
+          'wave-length': 'Våglängd',
+          'wave-effect': 'Våg',
+          'tanrot-effect': 'Tan Rotation',
+          'interactive-mouse-effect': 'Interaktiv Mus',
+          'neon-effect': 'Neon',
+          'blank-canvas': 'Tomt Kanvas'
+        }
+      }
+
     this.bgColorPicker = p5.createColorPicker("#ffffff");
     this.bgColorPicker.position(40, 580);
     this.bgColorPicker.size(25, 25);
@@ -156,6 +189,10 @@ class App extends React.Component {
     ######  Helper Methods ######
     #############################
     */
+    const getTranslation = (lang, text) => {
+      return translations[lang][text];
+    }
+    
     const createRangeSlider = (rangeDetails, posX, posY) => {
       const sliderDiv = p5.createDiv();
       sliderDiv.parent(this.parametersContainer);
