@@ -26,16 +26,17 @@ class App extends React.Component {
     this.effectSelector;
     this.selectedWeight;
     this.parametersContainer;
-    this.heat;
+    this.brightness;
     this.bgBrighten;
     this.fontColor;
     this.fontShadowColor;
     this.bgColorPicker;
+    this.fontColorPicker;
     this.effectActions = [
       { value: 'wave', label: 'Wave Effect' },
       { value: 'tanRot', label: 'Tan Rotation Effect' },
       { value: 'interactiveMouse', label: 'Interactive Mouse' },
-      { value: 'heatEffect', label: 'Heat Effect' },
+      { value: 'neonEffect', label: 'Neon Effect' },
       { value: 'none', label: 'Blank Canvas' }
     ];
     this.fontWeights = ['p5.NORMAL','p5.ITALIC','p5.BOLD','p5.BOLDITALIC'];
@@ -53,8 +54,8 @@ class App extends React.Component {
       this.waveEffect(p5); // apply the wave effect to the text
     } else if (effectSelector.selected() === "interactiveMouse") {
       this.interactiveMouseEffect(p5); // apply the interactive mouse effect to the text 
-    } else if (effectSelector.selected() === "heatEffect") {
-      this.heatEffect(p5);
+    } else if (effectSelector.selected() === "neonEffect") {
+      this.neonEffect(p5);
     } else if (effectSelector.selected() === "none") {
       // do nothing for now (blank canvas)
       void(0);
@@ -71,6 +72,8 @@ class App extends React.Component {
     this.speedSliderDiv.hide();
     this.amplitudeSliderDiv.hide();
     this.waveLengthSliderDiv.hide();
+    this.bgColorPicker.hide();
+    this.fontColorPicker.hide();
   }
   // TODO functions for each effect that only shows the sliders relevant for the current effect.
   showAllMenuElements = () => {
@@ -80,6 +83,8 @@ class App extends React.Component {
     this.speedSliderDiv.show();
     this.amplitudeSliderDiv.show();
     this.waveLengthSliderDiv.show();
+    this.bgColorPicker.show();
+    this.fontColorPicker.show();
   }
 
   preload = (p5) => {
@@ -97,15 +102,18 @@ class App extends React.Component {
   setup = (p5, canvasParentRef) => {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
 
-    this.bgColorPicker = p5.createColorPicker("ffffff");
-    // position color picker
+    this.bgColorPicker = p5.createColorPicker("#ffffff");
     this.bgColorPicker.position(40, 580);
-    // size color picker
     this.bgColorPicker.size(25, 25);
 
+    this.fontColorPicker = p5.createColorPicker("#000000");
+    this.fontColorPicker.position(80, 580);
+    this.fontColorPicker.size(25, 25);
+
+    p5.frameRate(60);
     cnv.style('display', 'block');
     this.menuOpen = true; 
-    this.heat = 0;
+    this.brightness = 0;
     this.bgBrighten = true;
     p5.soundFormats('mp3', 'ogg');
     this.song = p5.loadSound('https://freesound.org/data/previews/612/612610_5674468-lq');
@@ -123,9 +131,6 @@ class App extends React.Component {
     p5.textFont(cairoPlayFont);
     this.parametersContainer = p5.createDiv().id('parameters-container');
     // this.parametersContainer.id('parameters-container');
-    
-    let backgroundColorPicker = p5.createColorPicker("white").parent(cnv);
-    backgroundColorPicker.position = (window.innerWidth / 2, window.innerWidth / 2);
 
     this.effectSelector = p5.createSelect();
     this.effectSelector.position(5, 30);
@@ -211,11 +216,9 @@ class App extends React.Component {
     [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);
 
     // hideSliders();
-    
   
     p5.textAlign(p5.CENTER);
     p5.angleMode(p5.DEGREES);
-    
     
     // parametersContainer.hide();
   }
@@ -271,7 +274,7 @@ class App extends React.Component {
       p5.rect(x1, 0, width, height, 0, 0, 10, 0);
       p5.fill(255);
       p5.textSize(32);
-      p5.text('>', 27, 25); // very arbitrary values for centering, but 
+      p5.text('>', 27, 25); // very arbitrary values for centering, todo: fix 
     }
     
   }
@@ -299,7 +302,7 @@ class App extends React.Component {
 
   for (var i = 0; i < this.text.length; i++) {
     wave = p5.sin(p5.frameCount * this.speed.value() + i * this.waveLength.value()) * this.amplitude.value();
-    p5.fill(0);
+    p5.fill(this.fontColorPicker.color());
     p5.push();
     p5.translate(i * this.fontSize.value(), 0);
     p5.text(this.text.charAt(i), 0, wave).textStyle(this.selectedWeight);
@@ -312,8 +315,6 @@ tanRotEffect = (p5) => {
     p5.push();
 
     p5.rotate(p5.tan(p5.frameCount + i * this.amplitude.value()) * this.speed.value());
-
-    p5.fill(0, 0, 0);
 
     let spacing = this.fontSize.value();
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 - i * spacing);
@@ -347,36 +348,30 @@ interactiveMouseEffect = (p5) => {
   }
 }
 
-heatEffect = (p5) => {
-  let bgHeat = 40; // TODO change this with mouse clicks, perhaps transfer the heat of the letters to the background on mouse click?
-  p5.background(bgHeat);
+neonEffect = (p5) => {
+  let bgColor = 40; 
+  p5.background(bgColor);
 
   p5.fill(0);
-  p5.frameRate(60);
-  // Measure how much mouse position changes and calculate heat.
-  let xHeat = Math.abs(Math.round((p5.pmouseX - p5.mouseX) / 10));
-  let yHeat = Math.abs(Math.round((p5.pmouseY - p5.mouseY) / 10));
-  this.heat = this.heat + xHeat + yHeat;
+  // Measure how much mouse position changes and calculate brightness.
+  let xDiff = Math.abs(Math.round((p5.pmouseX - p5.mouseX) / 10));
+  let yDiff = Math.abs(Math.round((p5.pmouseY - p5.mouseY) / 10));
+  this.brightness = this.brightness + xDiff + yDiff;
 
-  // Display values of x, y and total heat on screen. (Only used for development.)
-  // p5.text(xHeatAbs, window.innerWidth / 3, window.innerHeight/4);
-  // p5.text(yHeatAbs, window.innerWidth / 2, window.innerHeight/4);
-  // p5.text(this.heat, window.innerWidth / 1.5, window.innerHeight/4);
-
-  // Turn on the humming noise and increase volume with heat.
+  // Turn on the humming noise and increase volume as brightness increases.
   if (!this.hum.isPlaying()) { this.hum.loop(); }
-  let volume = p5.map(this.heat, 0, 512, 0, 0.7, true);
+  let volume = p5.map(this.brightness, 0, 512, 0, 0.7, true);
   this.hum.setVolume(volume);
   
-  if (this.bgBrighten) { p5.background(bgHeat + this.heat / 20); } // TODO add a checkbox to turn on/off.
+  if (this.bgBrighten) { p5.background(bgColor + this.brightness / 20); } // TODO add a checkbox to turn on/off.
 
   // Draw text.
   p5.push();
   let shadowStrength = 64; // TODO add a slider for shadowStrength.
   p5.drawingContext.shadowBlur = shadowStrength;
-  p5.drawingContext.shadowColor = p5.color(this.heat, 0, 0, this.heat);
+  p5.drawingContext.shadowColor = p5.color(this.brightness, 0, 0, this.brightness);
 
-  p5.fill(this.heat, 0, 0);
+  p5.fill(this.brightness, 0, 0);
   p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2);  
 
   // Draw glow
@@ -389,10 +384,10 @@ heatEffect = (p5) => {
 
   // Decay.
   let decay = 2;
-  if (this.heat > 0) { this.heat = this.heat - decay; }
+  if (this.brightness > 0) { this.brightness = this.brightness - decay; }
   // Bounds.
-  if (this.heat < 0) { this.heat = 0; }
-  if (this.heat > 255) { this.heat = 255; }
+  if (this.brightness < 0) { this.brightness = 0; }
+  if (this.brightness > 255) { this.brightness = 255; }
 }
 
   render() {
