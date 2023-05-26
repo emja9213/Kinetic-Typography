@@ -42,27 +42,81 @@ class App extends React.Component {
     this.fontWeights = ['p5.NORMAL','p5.ITALIC','p5.BOLD','p5.BOLDITALIC'];
     this.song = null;
     this.hum = null;
+    this.currentLanguage = 'en';
+    this.languageSelector;
+    this.languages = [
+      { key: 'en', name: 'English'},
+      { key: 'sv', name: 'Svenska'}
+    ]
+    this.dict = {
+      'en': {
+      'language-selector': 'Choose language',
+      'font-size': 'Font Size',
+      'speed': 'Speed',
+      'amplitude': 'Amplitude',
+      'wave-length': 'Wave Length',
+      'wave-effect': 'Wave',
+      'tanrot-effect': 'Tan Rotation',
+      'interactive-mouse-effect': 'Interactive Mouse',
+      'neon-effect': 'Neon',
+      'blank-canvas': 'Blank Canvas'
+      },
+      'sv': {
+      'language-selector': 'Välj språk:',
+      'font-size': 'Textstorlek',
+      'speed': 'Hastighet',
+      'amplitude': 'Amplitud',
+      'wave-length': 'Våglängd',
+      'wave-effect': 'Våg',
+      'tanrot-effect': 'Tan Rotation',
+      'interactive-mouse-effect': 'Interaktiv Mus',
+      'neon-effect': 'Neon',
+      'blank-canvas': 'Tomt Kanvas'
+      }
+    }
   }
-  // Check for selected effect animation and apply it
-  effectHandler(effectSelector, p5) {
+  
+  getTranslation = (language, key) => {
+    return this.dict[language][key];
+  }
 
-    p5.cursor(p5.ARROW);
+  waveMenuElements = () => {
+    this.effectSelector.show();
+    this.input.show();
+    this.fontSizeSliderDiv.show();
+    this.speedSliderDiv.show();
+    this.amplitudeSliderDiv.show();
+    this.waveLengthSliderDiv.show();
+    this.bgColorPicker.show();
+    this.fontColorPicker.show();
+  }
 
-    if (effectSelector.selected() === "tanRot") {
-      this.tanRotEffect(p5); // apply the tan rotation effect to the text
-    } else if (effectSelector.selected() === "wave") {
-      this.waveEffect(p5); // apply the wave effect to the text
-    } else if (effectSelector.selected() === "interactiveMouse") {
-      this.interactiveMouseEffect(p5); // apply the interactive mouse effect to the text 
-    } else if (effectSelector.selected() === "neonEffect") {
-      this.neonEffect(p5);
-    } else if (effectSelector.selected() === "none") {
-      // do nothing for now (blank canvas)
-      void(0);
-    }
-    else {
-      p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2);
-    }
+  tanRotMenuElements = () => {
+    this.effectSelector.show();
+    this.input.show();
+    this.fontSizeSliderDiv.show();
+    this.speedSliderDiv.show();
+    this.amplitudeSliderDiv.show();
+    this.bgColorPicker.show();
+    this.fontColorPicker.show();
+  }
+
+  intMouseMenuElements = () => {
+    this.effectSelector.show();
+    this.input.show();
+    this.fontSizeSliderDiv.show();
+  }
+  
+  neonMenuElements = () => {
+    this.effectSelector.show();
+    this.input.show();
+    this.fontSizeSliderDiv.show();
+    this.bgColorPicker.show();
+    this.fontColorPicker.show();
+  }
+
+  blankMenuElements = () => {
+    this.effectSelector.show();
   }
 
   hideAllMenuElements = () => {
@@ -75,16 +129,50 @@ class App extends React.Component {
     this.bgColorPicker.hide();
     this.fontColorPicker.hide();
   }
-  // TODO functions for each effect that only shows the sliders relevant for the current effect.
-  showAllMenuElements = () => {
-    this.effectSelector.show()
-    this.input.show();
-    this.fontSizeSliderDiv.show();
-    this.speedSliderDiv.show();
-    this.amplitudeSliderDiv.show();
-    this.waveLengthSliderDiv.show();
-    this.bgColorPicker.show();
-    this.fontColorPicker.show();
+
+  showSelectedMenuElements = () => {
+    switch (this.effectSelector.selected()) {
+      case 'wave':
+        this.waveMenuElements();
+        break;
+      case 'tanRot':
+        this.tanRotMenuElements();
+        break;
+      case 'interactiveMouse':
+        this.intMouseMenuElements();
+        break;
+      case 'neonEffect':
+        this.neonMenuElements();
+        break;
+      default: // This covers the blank canvas option
+        this.blankMenuElements();
+    }
+  }
+
+  // Check for selected effect animation and apply it
+  effectHandler(effectSelector, p5) {
+
+    p5.cursor(p5.ARROW);
+
+    if (effectSelector.selected() === "tanRot") {
+      this.tanRotEffect(p5); // apply the tan rotation effect to the text
+
+    } else if (effectSelector.selected() === "wave") {
+      this.waveEffect(p5); // apply the wave effect to the text
+
+    } else if (effectSelector.selected() === "interactiveMouse") {
+      this.interactiveMouseEffect(p5); // apply the interactive mouse effect to the text 
+
+    } else if (effectSelector.selected() === "neonEffect") {
+      this.neonEffect(p5);
+
+    } else if (effectSelector.selected() === "none") {
+      // do nothing for now (blank canvas)
+      void(0);
+    }
+    else {
+      p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2);
+    }
   }
 
   preload = (p5) => {
@@ -102,39 +190,6 @@ class App extends React.Component {
   setup = (p5, canvasParentRef) => {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
 
-    
-    const languages = [
-      { code: 'en', name: 'English'},
-      { code: 'sv', name: 'Svenska'}
-    ]
-    
-    const translations = {
-        'en': {
-          'language-selector': 'Choose language',
-          'font-size': 'Font Size',
-          'speed': 'Speed',
-          'amplitude': 'Amplitude',
-          'wave-length': 'Wave Length',
-          'wave-effect': 'Wave',
-          'tanrot-effect': 'Tan Rotation',
-          'interactive-mouse-effect': 'Interactive Mouse',
-          'neon-effect': 'Neon',
-          'blank-canvas': 'Blank Canvas'
-        },
-        'sv': {
-          'language-selector': 'Välj språk:',
-          'font-size': 'Textstorlek',
-          'speed': 'Hastighet',
-          'amplitude': 'Amplitud',
-          'wave-length': 'Våglängd',
-          'wave-effect': 'Våg',
-          'tanrot-effect': 'Tan Rotation',
-          'interactive-mouse-effect': 'Interaktiv Mus',
-          'neon-effect': 'Neon',
-          'blank-canvas': 'Tomt Kanvas'
-        }
-      }
-
     this.bgColorPicker = p5.createColorPicker("#ffffff");
     this.bgColorPicker.position(40, 580);
     this.bgColorPicker.size(25, 25);
@@ -142,6 +197,17 @@ class App extends React.Component {
     this.fontColorPicker = p5.createColorPicker("#000000");
     this.fontColorPicker.position(80, 580);
     this.fontColorPicker.size(25, 25);
+
+    this.languageSelector = p5.createSelect();
+    this.languageSelector.position(30, 700);
+
+    this.languages.forEach(languages => {
+      this.languageSelector.option(languages.name, languages.key);
+    });
+    this.languageSelector.changed(() => {
+      console.log(this.languageSelector.value());
+      // this.currentLanguage = this.languageSelector.value();
+    });
 
     p5.frameRate(60);
     cnv.style('display', 'block');
@@ -173,6 +239,8 @@ class App extends React.Component {
     });
     this.effectSelector.changed(() => {
       this.setState({ effect: this.effectSelector.value() });
+      this.hideAllMenuElements();
+      this.showSelectedMenuElements();
       this.effectHandler(this.effectSelector, p5);
     });
     // effectSelector.changed();
@@ -188,11 +256,8 @@ class App extends React.Component {
     #############################
     ######  Helper Methods ######
     #############################
-    */
-    const getTranslation = (lang, text) => {
-      return translations[lang][text];
-    }
-    
+    */ 
+
     const createRangeSlider = (rangeDetails, posX, posY) => {
       const sliderDiv = p5.createDiv();
       sliderDiv.parent(this.parametersContainer);
@@ -239,17 +304,17 @@ class App extends React.Component {
 
     //  Generate range sliders for each effect parameter
 
-    let fontSizeRangeDetails = {label: 'Font Size', min: 32, max: 256, defaultValue: 64, step: 2};
+    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 32, max: 256, defaultValue: 64, step: 2};
     [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
     // console.log(this.fontSizeSliderDiv);
 
-    let speedRangeDetails = {label: 'Speed', min: 0.1, max: 20, defaultValue: 3, step: 0.1};
+    let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
     [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, 5, sliderDivYPos + 125);
 
-    let amplitudeRangeDetails = {label: 'Amplitude', min: 1, max: 512, defaultValue: 16, step: 1};
+    let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 16, step: 1};
     [this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, 5, sliderDivYPos + 250);
 
-    let waveLengthRangeDetails = {label: 'Wave Length', min: 0, max: 128, defaultValue: 16, step: 1};
+    let waveLengthRangeDetails = {label: this.getTranslation(this.currentLanguage, 'wave-length'), min: 0, max: 128, defaultValue: 16, step: 1};
     [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);
 
     // hideSliders();
@@ -259,7 +324,6 @@ class App extends React.Component {
     
     // parametersContainer.hide();
   }
-
   draw = (p5) => {
     p5.background(this.bgColorPicker.color());
     p5.noStroke();    
@@ -301,7 +365,8 @@ class App extends React.Component {
         p5.fill(130);
         if (p5.mouseIsPressed) {
           this.menuOpen = true;
-          this.showAllMenuElements();
+          // TODO helper function for this and everything else here tbh 
+          this.showSelectedMenuElements();
         }
       }
       else {
