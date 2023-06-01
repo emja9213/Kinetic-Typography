@@ -324,41 +324,32 @@ class App extends React.Component {
     
     // parametersContainer.hide();
   }
-  draw = (p5) => {
-    p5.background(this.bgColorPicker.color());
-    p5.noStroke();    
 
-    this.text = this.input.value();
-    p5.textSize(this.fontSize.value());
-    // call effectHandler to draw the text
-    p5.push();
-    this.effectHandler(this.effectSelector, p5);
-    p5.pop();
+  drawOpenMenu(p5) {
+    p5.fill(230, 200);
+    p5.rect(0, 0, 255, window.innerHeight);
+    let x1 = 200, x2 = 255, width = x2 - x1;
+    let y1 = 0, y2 = 35, height = y2 - y1;
+    // Color the close-button if hovered, then check if it is clicked.
+    if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){ 
+      p5.fill(130);
+      if (p5.mouseIsPressed) {
+        this.menuOpen = false;
+        this.hideAllMenuElements();
+      }
+    }
+    else {
+      p5.fill(180); // Color when not hovered.
+    }
+    // draw "close" button.
+    p5.rect(x1, 0, width, height, 0, 0, 0, 10);
+    p5.fill(255);
+    p5.textSize(32);
+    p5.text('x', 228, 25);
+  }
 
-    // draw the menu and show its elements, or just the open-button if its closed.
-    if (this.menuOpen) {
-      p5.fill(230, 200);
-      p5.rect(0, 0, 255, window.innerHeight);
-      let x1 = 200, x2 = 255, width = x2 - x1;
-      let y1 = 0, y2 = 35, height = y2 - y1;
-      // Color the close-button if hovered, then check if it is clicked.
-      if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){ 
-        p5.fill(130);
-        if (p5.mouseIsPressed) {
-          this.menuOpen = false;
-          this.hideAllMenuElements();
-        }
-      }
-      else {
-        p5.fill(180); // Color when not hovered.
-      }
-      // draw "close" button.
-      p5.rect(x1, 0, width, height, 0, 0, 0, 10);
-      p5.fill(255);
-      p5.textSize(32);
-      p5.text('x', 228, 25);
-    } else {
-      let x1 = 0, x2 = 55, width = x2 - x1;
+  drawClosedMenu(p5) {
+    let x1 = 0, x2 = 55, width = x2 - x1;
       let y1 = 0, y2 = 35, height = y2 - y1;
       // Color the open-button if hovered, then check if it is clicked.
       if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){
@@ -377,8 +368,25 @@ class App extends React.Component {
       p5.fill(255);
       p5.textSize(32);
       p5.text('>', 27, 25); // very arbitrary values for centering, todo: fix 
+  }
+
+  draw = (p5) => {
+    p5.background(this.bgColorPicker.color());
+    p5.noStroke();    
+
+    this.text = this.input.value();
+    p5.textSize(this.fontSize.value());
+    // call effectHandler to draw the text
+    p5.push();
+    this.effectHandler(this.effectSelector, p5);
+    p5.pop();
+
+    // draw the menu and show its elements, or just the open-button if its closed.
+    if (this.menuOpen) {
+      this.drawOpenMenu(p5);
+    } else {
+      this.drawClosedMenu(p5);
     }
-    
   }
 
   mouseReleased() {
