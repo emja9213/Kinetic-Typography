@@ -72,12 +72,12 @@ import React from 'react';
     const [angleState, setAngleState] = React.useState(startValue/gain);
     const imageRef = React.useRef(null);
     const angleRef = React.useRef(0);
-    const rotationStr = `rotate( ${angleState } 25 25)`;
+    const rotationStr = `rotate( ${angleState} 25 25)`;
     const sizeStr = `${radius}px`
     //We wrap the callback function in useEfect to remove warnings
     
       callbackFunction(angleState*gain);
-    
+    console.log("rendered");
 
     return (
       <div>

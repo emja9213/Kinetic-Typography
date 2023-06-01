@@ -399,7 +399,6 @@ class App extends React.Component {
 
   waveEffect = (p5) => {
   let wave;
-S
   p5.translate(window.innerWidth / 2, window.innerHeight / 2);
 
   p5.translate(-(this.text.length - 1) * this.state.fontSize / 2, 0);
@@ -498,7 +497,7 @@ neonEffect = (p5) => {
     return (
       <>
       <div>
-        <Knob radius={150} callbackFunction={(s)=> this.setState({fontSize:s})} id={"knob"} startValue={30}/>
+        <Knob radius={100} callbackFunction={(s)=> this.setState({fontSize:s})} id={"knob"} startValue={30}/>
       </div>
         <div className="App">
         <Sketch setup={this.setup} draw={this.draw} windowResized={this.windowResized}/>
