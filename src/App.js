@@ -4,6 +4,7 @@ import Sketch from 'react-p5'
 import 'p5/lib/addons/p5.sound';
 import '@yaireo/ui-range';
 import _ from 'lodash';
+import Knob from './Knob';
 
 "use strict";
 
@@ -17,8 +18,9 @@ class App extends React.Component {
     this.text;
     this.speed;
     this.speedSliderDiv;
-    this.fontSize;
-    this.fontSizeSliderDiv;
+    this.state={fontSize:30}
+    //this.fontSize;
+    //this.fontSizeSliderDiv;
     this.amplitude;
     this.amplitudeSliderDiv;
     this.waveLength;
@@ -83,7 +85,7 @@ class App extends React.Component {
   waveMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    //this.fontSizeSliderDiv.show();
     this.speedSliderDiv.show();
     this.amplitudeSliderDiv.show();
     this.waveLengthSliderDiv.show();
@@ -94,7 +96,7 @@ class App extends React.Component {
   tanRotMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    //this.fontSizeSliderDiv.show();
     this.speedSliderDiv.show();
     this.amplitudeSliderDiv.show();
     this.bgColorPicker.show();
@@ -104,13 +106,13 @@ class App extends React.Component {
   intMouseMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    //this.fontSizeSliderDiv.show();
   }
   
   neonMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    //this.fontSizeSliderDiv.show();
     this.bgColorPicker.show();
     this.fontColorPicker.show();
   }
@@ -122,7 +124,7 @@ class App extends React.Component {
   hideAllMenuElements = () => {
     this.effectSelector.hide();
     this.input.hide();
-    this.fontSizeSliderDiv.hide();
+    //this.fontSizeSliderDiv.hide();
     this.speedSliderDiv.hide();
     this.amplitudeSliderDiv.hide();
     this.waveLengthSliderDiv.hide();
@@ -289,14 +291,14 @@ class App extends React.Component {
 
     // function to hide all sliders
     const hideSliders = () => {
-      this.fontSizeSliderDiv.hide();
+      //this.fontSizeSliderDiv.hide();
       this.speedSliderDiv.hide();
       this.amplitudeSliderDiv.hide();
       this.waveLengthSliderDiv.hide();
     }
     // function to show sliders
     const showSliders = () => {
-      this.fontSizeSliderDiv.show();
+      // this.fontSizeSliderDiv.show();
       this.speedSliderDiv.show();
       this.amplitudeSliderDiv.show();
       this.waveLengthSliderDiv.show();
@@ -304,8 +306,8 @@ class App extends React.Component {
 
     //  Generate range sliders for each effect parameter
 
-    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 32, max: 256, defaultValue: 64, step: 2};
-    [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
+    //let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 32, max: 256, defaultValue: 64, step: 2};
+    //[this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
     // console.log(this.fontSizeSliderDiv);
 
     let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
@@ -329,7 +331,7 @@ class App extends React.Component {
     p5.noStroke();    
 
     this.text = this.input.value();
-    p5.textSize(this.fontSize.value());
+    p5.textSize(this.state.fontSize);
     // call effectHandler to draw the text
     p5.push();
     this.effectHandler(this.effectSelector, p5);
@@ -397,16 +399,16 @@ class App extends React.Component {
 
   waveEffect = (p5) => {
   let wave;
-
+S
   p5.translate(window.innerWidth / 2, window.innerHeight / 2);
 
-  p5.translate(-(this.text.length - 1) * this.fontSize.value() / 2, 0);
+  p5.translate(-(this.text.length - 1) * this.state.fontSize / 2, 0);
 
   for (var i = 0; i < this.text.length; i++) {
     wave = p5.sin(p5.frameCount * this.speed.value() + i * this.waveLength.value()) * this.amplitude.value();
     p5.fill(this.fontColorPicker.color());
     p5.push();
-    p5.translate(i * this.fontSize.value(), 0);
+    p5.translate(i * this.state.fontSize, 0);
     p5.text(this.text.charAt(i), 0, wave).textStyle(this.selectedWeight);
     p5.pop();
   }
@@ -418,7 +420,7 @@ tanRotEffect = (p5) => {
 
     p5.rotate(p5.tan(p5.frameCount + i * this.amplitude.value()) * this.speed.value());
 
-    let spacing = this.fontSize.value();
+    let spacing = this.state.fontSize;
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 - i * spacing);
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 + i * spacing);
 
@@ -494,9 +496,15 @@ neonEffect = (p5) => {
 
   render() {
     return (
-      <div className="App">
+      <>
+      <div>
+        <Knob radius={150} callbackFunction={(s)=> this.setState({fontSize:s})} id={"knob"} startValue={30}/>
+      </div>
+        <div className="App">
         <Sketch setup={this.setup} draw={this.draw} windowResized={this.windowResized}/>
       </div>
+      </>
+
     );
   }
 }
