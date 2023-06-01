@@ -12,6 +12,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.mobileView;
     this.menuOpen;
     this.input;
     this.text;
@@ -89,6 +90,7 @@ class App extends React.Component {
     this.waveLengthSliderDiv.show();
     this.bgColorPicker.show();
     this.fontColorPicker.show();
+    this.languageSelector.show();
   }
 
   tanRotMenuElements = () => {
@@ -99,12 +101,14 @@ class App extends React.Component {
     this.amplitudeSliderDiv.show();
     this.bgColorPicker.show();
     this.fontColorPicker.show();
+    this.languageSelector.show();
   }
 
   intMouseMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
     this.fontSizeSliderDiv.show();
+    this.languageSelector.show();
   }
   
   neonMenuElements = () => {
@@ -113,10 +117,12 @@ class App extends React.Component {
     this.fontSizeSliderDiv.show();
     this.bgColorPicker.show();
     this.fontColorPicker.show();
+    this.languageSelector.show();
   }
 
   blankMenuElements = () => {
     this.effectSelector.show();
+    this.languageSelector.show();
   }
 
   hideAllMenuElements = () => {
@@ -128,6 +134,7 @@ class App extends React.Component {
     this.waveLengthSliderDiv.hide();
     this.bgColorPicker.hide();
     this.fontColorPicker.hide();
+    this.languageSelector.hide();
   }
 
   showSelectedMenuElements = () => {
@@ -189,26 +196,11 @@ class App extends React.Component {
 
   setup = (p5, canvasParentRef) => {
     const cnv = p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
-
-    this.bgColorPicker = p5.createColorPicker("#ffffff");
-    this.bgColorPicker.position(40, 580);
-    this.bgColorPicker.size(25, 25);
-
-    this.fontColorPicker = p5.createColorPicker("#000000");
-    this.fontColorPicker.position(80, 580);
-    this.fontColorPicker.size(25, 25);
-
-    this.languageSelector = p5.createSelect();
-    this.languageSelector.position(30, 700);
-
-    this.languages.forEach(languages => {
-      this.languageSelector.option(languages.name, languages.key);
-    });
-    this.languageSelector.changed(() => {
-      console.log(this.languageSelector.value());
-      // this.currentLanguage = this.languageSelector.value();
-    });
-
+    /*
+    #############################
+    ###  Canvas Configuration ###
+    #############################
+    */ 
     p5.frameRate(60);
     cnv.style('display', 'block');
     this.menuOpen = true; 
@@ -231,33 +223,16 @@ class App extends React.Component {
     this.parametersContainer = p5.createDiv().id('parameters-container');
     // this.parametersContainer.id('parameters-container');
 
-    this.effectSelector = p5.createSelect();
-    this.effectSelector.position(5, 30);
-    // generate new option for each value in effectActions array
-    this.effectActions.forEach(option => {
-      this.effectSelector.option(option.label, option.value);
-    });
-    this.effectSelector.changed(() => {
-      this.setState({ effect: this.effectSelector.value() });
-      this.hideAllMenuElements();
-      this.showSelectedMenuElements();
-      this.effectHandler(this.effectSelector, p5);
-    });
-    // effectSelector.changed();
-    
-    this.input = p5.createInput('Kinetic Typography');
-    this.input.position(5, 60);
-    
     const sliderDivXPos = 5;
     const sliderDivYPos = 115;
     this.parametersContainer.style('display', 'flex','position','inherit');
+
 
     /*
     #############################
     ######  Helper Methods ######
     #############################
     */ 
-
     const createRangeSlider = (rangeDetails, posX, posY) => {
       const sliderDiv = p5.createDiv();
       sliderDiv.parent(this.parametersContainer);
@@ -301,28 +276,95 @@ class App extends React.Component {
       this.amplitudeSliderDiv.show();
       this.waveLengthSliderDiv.show();
     }
-
-    //  Generate range sliders for each effect parameter
-
-    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 32, max: 256, defaultValue: 64, step: 2};
-    [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
-    // console.log(this.fontSizeSliderDiv);
-
-    let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
-    [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, 5, sliderDivYPos + 125);
-
-    let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 16, step: 1};
-    [this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, 5, sliderDivYPos + 250);
-
-    let waveLengthRangeDetails = {label: this.getTranslation(this.currentLanguage, 'wave-length'), min: 0, max: 128, defaultValue: 16, step: 1};
-    [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);
-
-    // hideSliders();
   
     p5.textAlign(p5.CENTER);
     p5.angleMode(p5.DEGREES);
-    
     // parametersContainer.hide();
+
+    /*
+    #############################
+    ####  Menu Configuration  ###
+    #############################
+    */ 
+    this.effectSelector = p5.createSelect();
+    // generate new option for each value in effectActions array
+    this.effectActions.forEach(option => {
+      this.effectSelector.option(option.label, option.value);
+    });
+    this.effectSelector.changed(() => {
+      this.setState({ effect: this.effectSelector.value() });
+      this.hideAllMenuElements();
+      this.showSelectedMenuElements();
+      this.effectHandler(this.effectSelector, p5);
+    });
+    // effectSelector.changed();    
+
+    this.input = p5.createInput('Kinetic Typography');
+
+    this.bgColorPicker = p5.createColorPicker("#ffffff");
+    this.fontColorPicker = p5.createColorPicker("#000000");
+
+    this.languageSelector = p5.createSelect();
+    this.languages.forEach(languages => {
+      this.languageSelector.option(languages.name, languages.key);
+    });
+    this.languageSelector.changed(() => {
+      console.log(this.languageSelector.value());
+      this.currentLanguage = this.languageSelector.value();
+    });
+
+    //  Generate range sliders for each effect parameter
+    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 12, max: 256, defaultValue: 52, step: 1};
+    let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
+    let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 16, step: 1};
+    let waveLengthRangeDetails = {label: this.getTranslation(this.currentLanguage, 'wave-length'), min: 0, max: 128, defaultValue: 16, step: 1};
+
+    const columnRight = window.innerWidth * 0.6;
+    const columnLeft = window.innerWidth * 0.05;
+    const rowHeader = window.innerHeight * 0.61;
+    const rowTop = window.innerHeight * 0.7;
+    const rowMid = window.innerHeight * 0.8;
+    const rowBottom = window.innerHeight * 0.9;
+
+    // Set positions of menu elements according to mobile or desktop view
+    if (window.innerWidth < window.innerHeight / 1.5) { // Note: we only look at screensize, rather than 'detect' mobile devices
+      this.mobileView = 1;
+  
+      this.effectSelector.position(columnLeft, rowHeader);
+      this.input.position(columnRight, rowHeader);
+
+      this.bgColorPicker.position(columnLeft, rowBottom);
+      this.bgColorPicker.size(25, 25);
+  
+      this.fontColorPicker.position(columnLeft + 50, rowBottom);
+      this.fontColorPicker.size(25, 25);
+  
+      this.languageSelector.position(columnRight, rowBottom);
+
+      [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, columnLeft, rowTop);
+      [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, columnRight, rowTop);
+      [this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, columnLeft, rowMid);
+      [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, columnRight, rowMid);
+  
+    } else {
+      this.mobileView = 0; // TODO RELATIVE VALUES
+      
+      this.effectSelector.position(5, 30);
+      this.input.position(5, 60);
+
+      this.bgColorPicker.position(40, 580);
+      this.bgColorPicker.size(25, 25);
+  
+      this.fontColorPicker.position(80, 580);
+      this.fontColorPicker.size(25, 25);
+  
+      this.languageSelector.position(30, 700);
+
+      [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
+      [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, 5, sliderDivYPos + 125);
+      [this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, 5, sliderDivYPos + 250);
+      [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);  
+    }
   }
 
   drawOpenMenu(p5) {
@@ -333,7 +375,7 @@ class App extends React.Component {
     // Color the close-button if hovered, then check if it is clicked.
     if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){ 
       p5.fill(130);
-      if (p5.mouseIsPressed) {
+      if (p5.mouseIsPressed) { // TODO: Tapping on mobile might not count as clicking, only tested with f12 mobile view in Firefox
         this.menuOpen = false;
         this.hideAllMenuElements();
       }
@@ -370,6 +412,51 @@ class App extends React.Component {
       p5.text('>', 27, 25); // very arbitrary values for centering, todo: fix 
   }
 
+  drawOpenMenuMobile(p5) { // TODO: clean up! remove magic numbers, make proper variables for values, etc 
+    p5.fill(230, 200);
+    p5.rect(0, window.innerHeight / 1.8, window.innerWidth, window.innerHeight / 2.2);
+
+    let x1 = window.innerWidth * 0.8, x2 = window.innerWidth, width = x2 - x1;
+    let y1 = 0, y2 = window.innerWidth * 0.1, height = y2 - y1;
+    // Color the close-button if hovered, then check if it is clicked.
+    if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1 + window.innerHeight / 1.8) && (p5.mouseY < y2 + window.innerHeight / 1.8)){  // holy magic numbers
+      p5.fill(130);
+      if (p5.mouseIsPressed) {
+        this.menuOpen = false;
+        this.hideAllMenuElements();
+      }
+    }
+    else {
+      p5.fill(180); // Color when not hovered.
+    }
+    // draw "close" button.
+    p5.rect(x1, window.innerHeight / 1.8, width, height, 0, 0, 0, 10);
+    p5.fill(255);
+    p5.textSize(32);
+    p5.text('x', window.innerWidth * 0.9, window.innerHeight / 1.7);
+  }
+
+  drawClosedMenuMobile(p5) {
+    let x1 = window.innerWidth * 0.8, x2 = window.innerWidth, width = x2 - x1;
+    let y1 = 0, y2 = window.innerWidth * 0.2, height = y2 - y1;
+    // Color the open-button if hovered, then check if it is clicked.
+    if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1 + window.innerHeight * 0.95) && (p5.mouseY < window.innerHeight)){
+      p5.fill(130);
+      if (p5.mouseIsPressed) {
+        this.menuOpen = true;
+        this.showSelectedMenuElements();
+      }
+    }
+    else {
+      p5.fill(180); // Color when not hovered.
+    }
+    // draw "open" button.
+    p5.rect(x1, window.innerHeight * 0.95, width, height, 10, 0, 0, 0);
+    p5.fill(255);
+    p5.textSize(32);
+    p5.text('^', window.innerWidth * 0.9, window.innerHeight);
+  }
+
   draw = (p5) => {
     p5.background(this.bgColorPicker.color());
     p5.noStroke();    
@@ -382,11 +469,21 @@ class App extends React.Component {
     p5.pop();
 
     // draw the menu and show its elements, or just the open-button if its closed.
-    if (this.menuOpen) {
-      this.drawOpenMenu(p5);
-    } else {
-      this.drawClosedMenu(p5);
+    p5.push();
+    if (this.mobileView) { // mobile view
+      if (this.menuOpen) {
+        this.drawOpenMenuMobile(p5);
+      } else {
+        this.drawClosedMenuMobile(p5);
+      }
+    } else { // desktop view
+      if (this.menuOpen) {
+        this.drawOpenMenu(p5);
+      } else {
+        this.drawClosedMenu(p5);
+      }
     }
+    p5.pop();
   }
 
   mouseReleased() {
@@ -395,6 +492,62 @@ class App extends React.Component {
 
   windowResized = (p5) => {
     p5.resizeCanvas(window.innerWidth, window.innerHeight);
+
+    // Update whether to use mobile or desktop view and redraw menu elements.
+    const columnRight = window.innerWidth * 0.6;
+    const columnLeft = window.innerWidth * 0.05;
+    const rowHeader = window.innerHeight * 0.61;
+    const rowTop = window.innerHeight * 0.7;
+    const rowMid = window.innerHeight * 0.8;
+    const rowBottom = window.innerHeight * 0.9;
+
+    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 12, max: 256, defaultValue: 52, step: 1};
+    let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
+    let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 16, step: 1};
+    let waveLengthRangeDetails = {label: this.getTranslation(this.currentLanguage, 'wave-length'), min: 0, max: 128, defaultValue: 16, step: 1};
+
+    if (window.innerWidth < window.innerHeight / 2) {
+      this.mobileView = 1;
+
+      this.effectSelector.position(columnLeft, rowHeader);
+      this.input.position(columnRight, rowHeader);
+
+      this.bgColorPicker.position(columnLeft, rowBottom);
+      this.bgColorPicker.size(25, 25);
+  
+      this.fontColorPicker.position(columnLeft + 50, rowBottom);
+      this.fontColorPicker.size(25, 25);
+  
+      this.languageSelector.position(columnRight, rowBottom);
+
+      //[this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, columnLeft, rowTop);
+      //[this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, columnRight, rowTop);
+      //[this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, columnLeft, rowMid);
+      //[this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, columnRight, rowMid);
+      
+    } else {
+      this.mobileView = 0;
+
+      this.effectSelector.position(5, 30);
+      this.input.position(5, 60);
+
+      this.bgColorPicker.position(40, 580);
+      this.bgColorPicker.size(25, 25);
+  
+      this.fontColorPicker.position(80, 580);
+      this.fontColorPicker.size(25, 25);
+  
+      this.languageSelector.position(30, 700);
+
+      //const sliderDivXPos = 5;
+      //const sliderDivYPos = 115;
+      //[this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
+      //[this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, 5, sliderDivYPos + 125);
+      //[this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, 5, sliderDivYPos + 250);
+      //[this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);  
+      
+    }
+    this.fontSizeSliderDiv.r;
   }
 
 /*
