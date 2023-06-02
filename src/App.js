@@ -33,6 +33,7 @@ class App extends React.Component {
     this.fontShadowColor;
     this.bgColorPicker;
     this.fontColorPicker;
+    this.glowColorPicker;
     this.effectActions = [
       { value: 'wave', label: 'Wave Effect' },
       { value: 'tanRot', label: 'Tan Rotation Effect' },
@@ -81,6 +82,8 @@ class App extends React.Component {
     return this.dict[language][key];
   }
 
+  // NOTE: ALL THE "MenuElements" FUNCTIONS ARE SPAGHETTI + REPEATED CODE + DEAD CODE, DUCT TAPED TOGETHER FOR FINAL PRESENTATION
+  // TODO: CLEAN UP BEFORE HANDING IN
   waveMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
@@ -91,6 +94,49 @@ class App extends React.Component {
     this.bgColorPicker.show();
     this.fontColorPicker.show();
     this.languageSelector.show();
+
+    // Reposition elements
+    const columnRight = window.innerWidth * 0.6;
+    const columnLeft = window.innerWidth * 0.05;
+    const rowHeader = window.innerHeight * 0.61;
+    const rowTop = window.innerHeight * 0.7;
+    const rowMid = window.innerHeight * 0.8;
+    const rowBottom = window.innerHeight * 0.9;
+
+    if (this.mobileView) {
+      this.effectSelector.position(columnLeft, rowHeader);
+      this.input.position(columnRight, rowHeader);
+
+      this.bgColorPicker.position(columnLeft, rowBottom);
+  
+      this.fontColorPicker.position(columnLeft + 70, rowBottom);
+
+      this.glowColorPicker.position(columnLeft + 140, rowBottom);
+      this.glowColorPicker.hide(); // TODO clean up, this is a "duct tape solution" to the glow color picker showing up on start
+  
+      this.languageSelector.position(columnRight, rowBottom);
+
+      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      this.speedSliderDiv.position(columnRight, rowTop);
+      this.amplitudeSliderDiv.position(columnLeft, rowMid);
+      this.waveLengthSliderDiv.position(columnRight, rowMid);
+
+    } else { // TODO Break up into helper function + avoid repeated code
+      this.effectSelector.position(5,  3 + window.innerHeight * 0.02);
+      this.input.position(5, 20 + window.innerHeight * 0.04);
+
+      this.bgColorPicker.position(20, 200 + window.innerHeight * 0.30);
+      this.fontColorPicker.position(20, 220 + window.innerHeight * 0.33);
+      this.glowColorPicker.position(20, 240 + window.innerHeight * 0.36);
+      this.glowColorPicker.hide(); // TODO proper solution, this is a "duct tape solution" to the glow color picker showing up on start
+
+      this.languageSelector.position(20, 240 + window.innerHeight * 0.36);
+
+      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+      this.speedSliderDiv.position(5, 80 + window.innerHeight * 0.12);
+      this.amplitudeSliderDiv.position(5, 120 + window.innerHeight * 0.18);
+      this.waveLengthSliderDiv.position(5, 160 + window.innerHeight * 0.24);
+    }
   }
 
   tanRotMenuElements = () => {
@@ -102,6 +148,45 @@ class App extends React.Component {
     this.bgColorPicker.show();
     this.fontColorPicker.show();
     this.languageSelector.show();
+
+    // Reposition elements
+    const columnRight = window.innerWidth * 0.6;
+    const columnLeft = window.innerWidth * 0.05;
+    const rowHeader = window.innerHeight * 0.61;
+    const rowTop = window.innerHeight * 0.7;
+    const rowMid = window.innerHeight * 0.8;
+    const rowBottom = window.innerHeight * 0.9;
+
+    if (this.mobileView) {
+      this.effectSelector.position(columnLeft, rowHeader);
+      this.input.position(columnRight, rowHeader);
+
+      this.bgColorPicker.position(columnLeft, rowBottom);
+  
+      this.fontColorPicker.position(columnLeft + 70, rowBottom);
+
+      this.glowColorPicker.position(columnLeft + 140, rowBottom);
+  
+      this.languageSelector.position(columnRight, rowBottom);
+
+      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      this.speedSliderDiv.position(columnRight, rowTop);
+      this.amplitudeSliderDiv.position(columnLeft, rowMid);
+      this.waveLengthSliderDiv.position(columnRight, rowMid);
+
+    } else { // TODO Break up into helper function + avoid repeated code
+      this.effectSelector.position(5,  3 + window.innerHeight * 0.02);
+      this.input.position(5, 20 + window.innerHeight * 0.04);
+  
+      this.bgColorPicker.position(20, 160 + window.innerHeight * 0.24);
+      this.fontColorPicker.position(20, 180 + window.innerHeight * 0.27);
+
+      this.languageSelector.position(20, 200 + window.innerHeight * 0.30);
+
+      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+      this.speedSliderDiv.position(5, 80 + window.innerHeight * 0.12);
+      this.amplitudeSliderDiv.position(5, 120 + window.innerHeight * 0.18);
+    }
   }
 
   intMouseMenuElements = () => {
@@ -109,6 +194,33 @@ class App extends React.Component {
     this.input.show();
     this.fontSizeSliderDiv.show();
     this.languageSelector.show();
+
+    // Reposition elements
+    const columnRight = window.innerWidth * 0.6;
+    const columnLeft = window.innerWidth * 0.05;
+    const rowHeader = window.innerHeight * 0.61;
+    const rowTop = window.innerHeight * 0.7;
+    const rowMid = window.innerHeight * 0.8;
+    const rowBottom = window.innerHeight * 0.9;
+
+    if (this.mobileView) {
+      this.effectSelector.position(columnLeft, rowHeader);
+      this.input.position(columnRight, rowHeader);
+  
+      this.languageSelector.position(columnRight, rowBottom);
+
+      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      this.speedSliderDiv.position(columnRight, rowTop);
+      this.amplitudeSliderDiv.position(columnLeft, rowMid);
+      this.waveLengthSliderDiv.position(columnRight, rowMid);
+    } else {
+      this.effectSelector.position(5,  3 + window.innerHeight * 0.02);
+      this.input.position(5, 20 + window.innerHeight * 0.04);
+
+      this.languageSelector.position(20, 80 + window.innerHeight * 0.12);
+      
+      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+    }
   }
   
   neonMenuElements = () => {
@@ -117,7 +229,46 @@ class App extends React.Component {
     this.fontSizeSliderDiv.show();
     this.bgColorPicker.show();
     this.fontColorPicker.show();
+    this.glowColorPicker.show();
     this.languageSelector.show();
+
+    // Reposition elements    
+    const columnRight = window.innerWidth * 0.6;
+    const columnLeft = window.innerWidth * 0.05;
+    const rowHeader = window.innerHeight * 0.61;
+    const rowTop = window.innerHeight * 0.7;
+    const rowMid = window.innerHeight * 0.8;
+    const rowBottom = window.innerHeight * 0.9;
+    
+    if (this.mobileView) {
+      this.effectSelector.position(columnLeft, rowHeader);
+      this.input.position(columnRight, rowHeader);
+
+      this.bgColorPicker.position(columnLeft, rowBottom);
+      this.fontColorPicker.position(columnLeft + 70, rowBottom);
+      this.glowColorPicker.position(columnLeft + 140, rowBottom);
+  
+      this.languageSelector.position(columnRight, rowBottom);
+
+      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      this.speedSliderDiv.position(columnRight, rowTop);
+      this.amplitudeSliderDiv.position(columnLeft, rowMid);
+      this.waveLengthSliderDiv.position(columnRight, rowMid);
+    } else {
+      this.effectSelector.position(5,  3 + window.innerHeight * 0.02);
+      this.input.position(5, 20 + window.innerHeight * 0.04);
+
+      this.bgColorPicker.position(20, 80 + window.innerHeight * 0.12);
+      this.fontColorPicker.position(20, 120 + window.innerHeight * 0.15);
+      this.glowColorPicker.position(20, 160 + window.innerHeight * 0.18);
+
+      this.languageSelector.position(20, 200 + window.innerHeight * 0.21);
+
+      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+      this.speedSliderDiv.position(5, 80 + window.innerHeight * 0.12);
+      this.amplitudeSliderDiv.position(5, 120 + window.innerHeight * 0.18);
+      this.waveLengthSliderDiv.position(5, 160 + window.innerHeight * 0.24);
+    }
   }
 
   blankMenuElements = () => {
@@ -134,6 +285,7 @@ class App extends React.Component {
     this.waveLengthSliderDiv.hide();
     this.bgColorPicker.hide();
     this.fontColorPicker.hide();
+    this.glowColorPicker.hide();
     this.languageSelector.hide();
   }
 
@@ -223,8 +375,6 @@ class App extends React.Component {
     this.parametersContainer = p5.createDiv().id('parameters-container');
     // this.parametersContainer.id('parameters-container');
 
-    const sliderDivXPos = 5;
-    const sliderDivYPos = 115;
     this.parametersContainer.style('display', 'flex','position','inherit');
 
 
@@ -303,6 +453,7 @@ class App extends React.Component {
 
     this.bgColorPicker = p5.createColorPicker("#ffffff");
     this.fontColorPicker = p5.createColorPicker("#000000");
+    this.glowColorPicker = p5.createColorPicker("#ff0000");
 
     this.languageSelector = p5.createSelect();
     this.languages.forEach(languages => {
@@ -326,6 +477,9 @@ class App extends React.Component {
     const rowMid = window.innerHeight * 0.8;
     const rowBottom = window.innerHeight * 0.9;
 
+    const sliderDivXPos = 5;
+    const sliderDivYPos = 115;
+
     // Set positions of menu elements according to mobile or desktop view
     if (window.innerWidth < window.innerHeight / 1.5) { // Note: we only look at screensize, rather than 'detect' mobile devices
       this.mobileView = 1;
@@ -334,10 +488,11 @@ class App extends React.Component {
       this.input.position(columnRight, rowHeader);
 
       this.bgColorPicker.position(columnLeft, rowBottom);
-      this.bgColorPicker.size(25, 25);
   
-      this.fontColorPicker.position(columnLeft + 50, rowBottom);
-      this.fontColorPicker.size(25, 25);
+      this.fontColorPicker.position(columnLeft + 70, rowBottom);
+
+      this.glowColorPicker.position(columnLeft + 140, rowBottom);
+      this.glowColorPicker.hide(); // TODO clean up, this is a "duct tape solution" to the glow color picker showing up on start
   
       this.languageSelector.position(columnRight, rowBottom);
 
@@ -348,34 +503,25 @@ class App extends React.Component {
   
     } else {
       this.mobileView = 0; // TODO RELATIVE VALUES
-      
-      this.effectSelector.position(5, 30);
-      this.input.position(5, 60);
-
-      this.bgColorPicker.position(40, 580);
-      this.bgColorPicker.size(25, 25);
-  
-      this.fontColorPicker.position(80, 580);
-      this.fontColorPicker.size(25, 25);
-  
-      this.languageSelector.position(30, 700);
 
       [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
       [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, 5, sliderDivYPos + 125);
       [this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, 5, sliderDivYPos + 250);
-      [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);  
+      [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);
+
+      this.showSelectedMenuElements();
     }
   }
 
   drawOpenMenu(p5) {
     p5.fill(230, 200);
-    p5.rect(0, 0, 255, window.innerHeight);
-    let x1 = 200, x2 = 255, width = x2 - x1;
-    let y1 = 0, y2 = 35, height = y2 - y1;
+    p5.rect(0, 0, 255, window.innerHeight); 
+    let x1 = 200, x2 = 255, width = x2 - x1; 
+    let y1 = 0, y2 = 35, height = y2 - y1; 
     // Color the close-button if hovered, then check if it is clicked.
     if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){ 
       p5.fill(130);
-      if (p5.mouseIsPressed) { // TODO: Tapping on mobile might not count as clicking, only tested with f12 mobile view in Firefox
+      if (p5.mouseIsPressed) {
         this.menuOpen = false;
         this.hideAllMenuElements();
       }
@@ -501,10 +647,10 @@ class App extends React.Component {
     const rowMid = window.innerHeight * 0.8;
     const rowBottom = window.innerHeight * 0.9;
 
-    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 12, max: 256, defaultValue: 52, step: 1};
-    let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
-    let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 16, step: 1};
-    let waveLengthRangeDetails = {label: this.getTranslation(this.currentLanguage, 'wave-length'), min: 0, max: 128, defaultValue: 16, step: 1};
+    //let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 12, max: 256, defaultValue: 52, step: 1};
+    //let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
+    //let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 16, step: 1};
+    //let waveLengthRangeDetails = {label: this.getTranslation(this.currentLanguage, 'wave-length'), min: 0, max: 128, defaultValue: 16, step: 1};
 
     if (window.innerWidth < window.innerHeight / 2) {
       this.mobileView = 1;
@@ -513,10 +659,10 @@ class App extends React.Component {
       this.input.position(columnRight, rowHeader);
 
       this.bgColorPicker.position(columnLeft, rowBottom);
-      this.bgColorPicker.size(25, 25);
   
-      this.fontColorPicker.position(columnLeft + 50, rowBottom);
-      this.fontColorPicker.size(25, 25);
+      this.fontColorPicker.position(columnLeft + 70, rowBottom);
+
+      this.glowColorPicker.position(columnLeft + 140, rowBottom);
   
       this.languageSelector.position(columnRight, rowBottom);
 
@@ -532,13 +678,15 @@ class App extends React.Component {
       this.input.position(5, 60);
 
       this.bgColorPicker.position(40, 580);
-      this.bgColorPicker.size(25, 25);
-  
       this.fontColorPicker.position(80, 580);
-      this.fontColorPicker.size(25, 25);
-  
+      this.glowColorPicker.position(120, 580);
+
       this.languageSelector.position(30, 700);
 
+      this.fontSizeSliderDiv.position(5, window.innerHeight * 0.12);
+      this.speedSliderDiv.position(5, window.innerHeight * 0.24);
+      this.amplitudeSliderDiv.position(5, window.innerHeight * 0.36);
+      this.waveLengthSliderDiv.position(5, window.innerHeight * 0.48);
       //const sliderDivXPos = 5;
       //const sliderDivYPos = 115;
       //[this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
@@ -547,6 +695,7 @@ class App extends React.Component {
       //[this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);  
       
     }
+    this.showSelectedMenuElements();
     this.fontSizeSliderDiv.r;
   }
 
@@ -580,6 +729,7 @@ tanRotEffect = (p5) => {
     p5.rotate(p5.tan(p5.frameCount + i * this.amplitude.value()) * this.speed.value());
 
     let spacing = this.fontSize.value();
+    p5.fill(this.fontColorPicker.color());
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 - i * spacing);
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 + i * spacing);
 
@@ -611,9 +761,10 @@ interactiveMouseEffect = (p5) => {
   }
 }
 
+// TODO better structure & bgBrighten.
 neonEffect = (p5) => {
-  let bgColor = 40; 
-  p5.background(bgColor);
+  //let bgColor = 40; 
+  p5.background(this.bgColorPicker.value());
 
   p5.fill(0);
   // Measure how much mouse position changes and calculate brightness.
@@ -626,15 +777,55 @@ neonEffect = (p5) => {
   let volume = p5.map(this.brightness, 0, 512, 0, 0.7, true);
   this.hum.setVolume(volume);
   
-  if (this.bgBrighten) { p5.background(bgColor + this.brightness / 20); } // TODO add a checkbox to turn on/off.
+  //if (this.bgBrighten) { p5.background(bgColor + this.brightness / 20); } // TODO add a checkbox to turn on/off.
 
   // Draw text.
   p5.push();
   let shadowStrength = 64; // TODO add a slider for shadowStrength.
-  p5.drawingContext.shadowBlur = shadowStrength;
-  p5.drawingContext.shadowColor = p5.color(this.brightness, 0, 0, this.brightness);
+  let rValue = p5.red(this.fontColorPicker.color());
+  let gValue = p5.green(this.fontColorPicker.color());
+  let bValue = p5.blue(this.fontColorPicker.color());
 
-  p5.fill(this.brightness, 0, 0);
+  let rGlowValue = p5.red(this.glowColorPicker.color());
+  let gGlowValue = p5.green(this.glowColorPicker.color());
+  let bGlowValue = p5.blue(this.glowColorPicker.color());
+
+  // Decide whether to increase or decrease font color value (base) to reach glow color (target).
+  // true = increase, false = decrease
+  // TODO break out into a helper function.
+  let rGlowIncrease = rValue <= rGlowValue;
+  let gGlowIncrease = gValue <= gGlowValue;
+  let bGlowIncrease = bValue <= bGlowValue;
+
+  let rBrightness, gBrightness, bBrightness;
+  if (rGlowIncrease) { 
+    rBrightness = rValue + this.brightness;
+    if (rBrightness > rGlowValue) { rBrightness = rGlowValue }
+  } else { 
+    rBrightness = rValue - this.brightness 
+    if (rBrightness < rGlowValue) { rBrightness = rGlowValue }
+  }
+
+  if (gGlowIncrease) { 
+    gBrightness = gValue + this.brightness;
+    if (gBrightness > gGlowValue) { gBrightness = gGlowValue }
+  } else { 
+    gBrightness = gValue - this.brightness 
+    if (gBrightness < gGlowValue) { gBrightness = gGlowValue }
+  }
+
+  if (bGlowIncrease) { 
+    bBrightness = bValue + this.brightness;
+    if (bBrightness > bGlowValue) { bBrightness = bGlowValue }
+  } else { 
+    bBrightness = bValue - this.brightness 
+    if (bBrightness < bGlowValue) { bBrightness = bGlowValue }
+  }
+
+  p5.drawingContext.shadowBlur = shadowStrength;
+  p5.drawingContext.shadowColor = p5.color(rBrightness, gBrightness, bBrightness, this.brightness);
+  
+  p5.fill(rBrightness, gBrightness, bBrightness);
   p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2);  
 
   // Draw glow
