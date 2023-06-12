@@ -41,13 +41,37 @@
 
 /* Range Slider Styling */
 
-/* .range-slider {
-  --min: 32;
-  --max: 256;
+.range-slider {
+  /* --min: 32;
+  --max: 256; */
   --value: 64;
   --primary-color: #0366d6;
   --step: 2;
   --show-min-max: block;
 
   width: 13rem;
-} */
+}
+
+.fontSize-range-slider {
+  --min: 32;
+  --max: 256;
+  --step: 2;
+}
+
+.speed-range-slider {
+  --min: 0.1 !important;
+  --max: 20 !important;
+  --step: 0.1 !important;
+}
+
+.amplitude-range-slider {
+  --min: 1 !important;
+  --max: 512 !important;
+  --step: 1 !important;
+}
+
+.waveLength-range-slider {
+  --min: 1;
+  --max: 128;
+  --step: 1;
+}

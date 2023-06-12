@@ -388,10 +388,10 @@ class App extends React.Component {
       sliderDiv.parent(this.parametersContainer);
       // convert label to camel case
       const classLabel = _.camelCase(rangeDetails.label);
-      sliderDiv.addClass(`range-slider ${classLabel}-range-slider'`);
+      sliderDiv.addClass(`range-slider ${classLabel}-range-slider`);
       sliderDiv.child(p5.createP(rangeDetails.label).style('padding', '1.5rem 0.7rem'));
       sliderDiv.position(posX, posY);
-      sliderDiv.style(`--min`, `${rangeDetails.min}`, `--max`, `${rangeDetails.max}`, `--value`, `${rangeDetails.defaultValue}`, `--text-value`, `${rangeDetails.defaultValue}`, `width`, `13rem`);
+      sliderDiv.style(`--min`, `${rangeDetails.min} !important`, `--max`, `${rangeDetails.max} !important`, `--value`, `${rangeDetails.defaultValue}`, `--text-value`, `${rangeDetails.defaultValue}`, `width`, `13rem`);
 
       const slider = p5.createSlider(rangeDetails.min, rangeDetails.max, rangeDetails.defaultValue, rangeDetails.step);
       slider.addClass('range');
