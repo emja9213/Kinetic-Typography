@@ -18,8 +18,8 @@ class App extends React.Component {
     this.text;
     this.speed;
     this.speedSliderDiv;
-    this.state={fontSize:30}
-    //this.fontSize;
+    
+    this.fontSize = 30;
     //this.fontSizeSliderDiv;
     this.amplitude;
     this.amplitudeSliderDiv;
@@ -331,7 +331,7 @@ class App extends React.Component {
     p5.noStroke();    
 
     this.text = this.input.value();
-    p5.textSize(this.state.fontSize);
+    p5.textSize(this.fontSize);
     // call effectHandler to draw the text
     p5.push();
     this.effectHandler(this.effectSelector, p5);
@@ -401,13 +401,13 @@ class App extends React.Component {
   let wave;
   p5.translate(window.innerWidth / 2, window.innerHeight / 2);
 
-  p5.translate(-(this.text.length - 1) * this.state.fontSize / 2, 0);
+  p5.translate(-(this.text.length - 1) * this.fontSize / 2, 0);
 
   for (var i = 0; i < this.text.length; i++) {
     wave = p5.sin(p5.frameCount * this.speed.value() + i * this.waveLength.value()) * this.amplitude.value();
     p5.fill(this.fontColorPicker.color());
     p5.push();
-    p5.translate(i * this.state.fontSize, 0);
+    p5.translate(i * this.fontSize, 0);
     p5.text(this.text.charAt(i), 0, wave).textStyle(this.selectedWeight);
     p5.pop();
   }
@@ -419,7 +419,7 @@ tanRotEffect = (p5) => {
 
     p5.rotate(p5.tan(p5.frameCount + i * this.amplitude.value()) * this.speed.value());
 
-    let spacing = this.state.fontSize;
+    let spacing = this.fontSize;
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 - i * spacing);
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 + i * spacing);
 
@@ -496,7 +496,9 @@ neonEffect = (p5) => {
   render() {
     return (
       <>
-
+      <div>
+        <Knob radius={100} callbackFunction={(s)=> this.setState({fontSize:s})} id={"knob"} startValue={30}/>
+      </div>
         <div className="App">
         <div style = {{position: "absolute", left:"4%", top:"80%"}}>
           <Knob min={-1000} max={500} radius={75} callbackFunction={(s)=> this.setState({fontSize:s})} id={"knob"} startValue={30}/>
