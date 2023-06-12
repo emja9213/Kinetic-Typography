@@ -76,10 +76,9 @@ import React from 'react';
     const sizeStr = `${radius}px`
     //We wrap the callback function in useEfect to remove warnings
     
-    React.useEffect(() => {
-      callbackFunction(angleState*gain);
-      console.log("rendered");
-    }, [callbackFunction]);
+
+    callbackFunction(angleState*gain);
+    console.log("rendered");
 
     return (
       <div>

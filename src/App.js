@@ -496,12 +496,9 @@ neonEffect = (p5) => {
   render() {
     return (
       <>
-      <div>
-        <Knob radius={100} callbackFunction={(s)=> this.setState({fontSize:s})} id={"knob"} startValue={30}/>
-      </div>
         <div className="App">
-        <div style = {{position: "absolute", left:"4%", top:"80%"}}>
-          <Knob min={-1000} max={500} radius={75} callbackFunction={(s)=> this.setState({fontSize:s})} id={"knob"} startValue={30}/>
+        <div className="knob">
+          <Knob min={-1000} max={500} radius={75} callbackFunction={(s)=> this.fontSize=s} id={"knob"} startValue={30}  color="#EE4B2B"/>
         </div>
         <Sketch setup={this.setup} draw={this.draw} windowResized={this.windowResized}/>
         
