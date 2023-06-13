@@ -45,6 +45,7 @@ class App extends React.Component {
     this.fontWeights = ['p5.NORMAL','p5.ITALIC','p5.BOLD','p5.BOLDITALIC'];
     this.song = null;
     this.hum = null;
+    this.knobDiv = null;
     this.currentLanguage = 'en';
     this.languageSelector;
     this.languages = [
@@ -95,6 +96,7 @@ class App extends React.Component {
     this.bgColorPicker.show();
     this.fontColorPicker.show();
     this.languageSelector.show();
+    if(this.knobDiv) { this.knobDiv.show(); }
 
     // Reposition elements
     const columnRight = window.innerWidth * 0.6;
@@ -149,6 +151,7 @@ class App extends React.Component {
     this.bgColorPicker.show();
     this.fontColorPicker.show();
     this.languageSelector.show();
+    if(this.knobDiv) { this.knobDiv.show(); }
 
     // Reposition elements
     const columnRight = window.innerWidth * 0.6;
@@ -195,6 +198,7 @@ class App extends React.Component {
     this.input.show();
     // this.fontSizeSliderDiv.show();
     this.languageSelector.show();
+    if(this.knobDiv) { this.knobDiv.show(); }
 
     // Reposition elements
     const columnRight = window.innerWidth * 0.6;
@@ -232,6 +236,7 @@ class App extends React.Component {
     this.fontColorPicker.show();
     this.glowColorPicker.show();
     this.languageSelector.show();
+    if(this.knobDiv) { this.knobDiv.show(); }
 
     // Reposition elements    
     const columnRight = window.innerWidth * 0.6;
@@ -288,6 +293,7 @@ class App extends React.Component {
     this.fontColorPicker.hide();
     this.glowColorPicker.hide();
     this.languageSelector.hide();
+    this.knobDiv.hide();
   }
 
   showSelectedMenuElements = () => {
@@ -615,8 +621,13 @@ class App extends React.Component {
 
   draw = (p5) => {
     p5.background(this.bgColorPicker.color());
-    p5.noStroke();    
-
+    p5.noStroke();
+    if(!this.knobDiv) {
+      // select the div with .knob class
+      this.knobDiv = p5.select('.knob');
+      console.log(this.knobDiv);
+      console.log('found knob div');
+    }
     this.text = this.input.value();
     p5.textSize(this.fontSize);
     // call effectHandler to draw the text
