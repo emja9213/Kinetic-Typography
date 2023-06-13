@@ -4,6 +4,7 @@ import Sketch from 'react-p5'
 import 'p5/lib/addons/p5.sound';
 import '@yaireo/ui-range';
 import _ from 'lodash';
+import Knob from './Knob.js';
 
 "use strict";
 
@@ -18,8 +19,8 @@ class App extends React.Component {
     this.text;
     this.speed;
     this.speedSliderDiv;
-    this.fontSize;
-    this.fontSizeSliderDiv;
+    this.fontSize = 32;
+    // this.fontSizeSliderDiv;
     this.amplitude;
     this.amplitudeSliderDiv;
     this.waveLength;
@@ -87,7 +88,7 @@ class App extends React.Component {
   waveMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    // this.fontSizeSliderDiv.show();
     this.speedSliderDiv.show();
     this.amplitudeSliderDiv.show();
     this.waveLengthSliderDiv.show();
@@ -116,7 +117,7 @@ class App extends React.Component {
   
       this.languageSelector.position(columnRight, rowBottom);
 
-      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      // this.fontSizeSliderDiv.position(columnLeft, rowTop);
       this.speedSliderDiv.position(columnRight, rowTop);
       this.amplitudeSliderDiv.position(columnLeft, rowMid);
       this.waveLengthSliderDiv.position(columnRight, rowMid);
@@ -132,7 +133,7 @@ class App extends React.Component {
 
       this.languageSelector.position(20, 240 + window.innerHeight * 0.36);
 
-      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+      // this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
       this.speedSliderDiv.position(5, 80 + window.innerHeight * 0.12);
       this.amplitudeSliderDiv.position(5, 120 + window.innerHeight * 0.18);
       this.waveLengthSliderDiv.position(5, 160 + window.innerHeight * 0.24);
@@ -142,7 +143,7 @@ class App extends React.Component {
   tanRotMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    // this.fontSizeSliderDiv.show();
     this.speedSliderDiv.show();
     this.amplitudeSliderDiv.show();
     this.bgColorPicker.show();
@@ -169,7 +170,7 @@ class App extends React.Component {
   
       this.languageSelector.position(columnRight, rowBottom);
 
-      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      // this.fontSizeSliderDiv.position(columnLeft, rowTop);
       this.speedSliderDiv.position(columnRight, rowTop);
       this.amplitudeSliderDiv.position(columnLeft, rowMid);
       this.waveLengthSliderDiv.position(columnRight, rowMid);
@@ -183,7 +184,7 @@ class App extends React.Component {
 
       this.languageSelector.position(20, 200 + window.innerHeight * 0.30);
 
-      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+      // this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
       this.speedSliderDiv.position(5, 80 + window.innerHeight * 0.12);
       this.amplitudeSliderDiv.position(5, 120 + window.innerHeight * 0.18);
     }
@@ -192,7 +193,7 @@ class App extends React.Component {
   intMouseMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    // this.fontSizeSliderDiv.show();
     this.languageSelector.show();
 
     // Reposition elements
@@ -209,7 +210,7 @@ class App extends React.Component {
   
       this.languageSelector.position(columnRight, rowBottom);
 
-      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      // this.fontSizeSliderDiv.position(columnLeft, rowTop);
       this.speedSliderDiv.position(columnRight, rowTop);
       this.amplitudeSliderDiv.position(columnLeft, rowMid);
       this.waveLengthSliderDiv.position(columnRight, rowMid);
@@ -219,14 +220,14 @@ class App extends React.Component {
 
       this.languageSelector.position(20, 80 + window.innerHeight * 0.12);
       
-      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+      // this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
     }
   }
   
   neonMenuElements = () => {
     this.effectSelector.show();
     this.input.show();
-    this.fontSizeSliderDiv.show();
+    // this.fontSizeSliderDiv.show();
     this.bgColorPicker.show();
     this.fontColorPicker.show();
     this.glowColorPicker.show();
@@ -250,7 +251,7 @@ class App extends React.Component {
   
       this.languageSelector.position(columnRight, rowBottom);
 
-      this.fontSizeSliderDiv.position(columnLeft, rowTop);
+      // this.fontSizeSliderDiv.position(columnLeft, rowTop);
       this.speedSliderDiv.position(columnRight, rowTop);
       this.amplitudeSliderDiv.position(columnLeft, rowMid);
       this.waveLengthSliderDiv.position(columnRight, rowMid);
@@ -264,7 +265,7 @@ class App extends React.Component {
 
       this.languageSelector.position(20, 200 + window.innerHeight * 0.21);
 
-      this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
+      // this.fontSizeSliderDiv.position(5, 40 + window.innerHeight * 0.06);
       this.speedSliderDiv.position(5, 80 + window.innerHeight * 0.12);
       this.amplitudeSliderDiv.position(5, 120 + window.innerHeight * 0.18);
       this.waveLengthSliderDiv.position(5, 160 + window.innerHeight * 0.24);
@@ -279,7 +280,7 @@ class App extends React.Component {
   hideAllMenuElements = () => {
     this.effectSelector.hide();
     this.input.hide();
-    this.fontSizeSliderDiv.hide();
+    // this.fontSizeSliderDiv.hide();
     this.speedSliderDiv.hide();
     this.amplitudeSliderDiv.hide();
     this.waveLengthSliderDiv.hide();
@@ -418,14 +419,14 @@ class App extends React.Component {
 
     // function to hide all sliders
     const hideSliders = () => {
-      this.fontSizeSliderDiv.hide();
+      // this.fontSizeSliderDiv.hide();
       this.speedSliderDiv.hide();
       this.amplitudeSliderDiv.hide();
       this.waveLengthSliderDiv.hide();
     }
     // function to show sliders
     const showSliders = () => {
-      this.fontSizeSliderDiv.show();
+      // this.fontSizeSliderDiv.show();
       this.speedSliderDiv.show();
       this.amplitudeSliderDiv.show();
       this.waveLengthSliderDiv.show();
@@ -500,7 +501,7 @@ class App extends React.Component {
   
       this.languageSelector.position(columnRight, rowBottom);
 
-      [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, columnLeft, rowTop);
+      // [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, columnLeft, rowTop);
       [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, columnRight, rowTop);
       [this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, columnLeft, rowMid);
       [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, columnRight, rowMid);
@@ -508,7 +509,7 @@ class App extends React.Component {
     } else {
       this.mobileView = 0; // TODO RELATIVE VALUES
 
-      [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
+      // [this.fontSizeSliderDiv, this.fontSize] = createRangeSlider(fontSizeRangeDetails, sliderDivXPos, sliderDivYPos);
       [this.speedSliderDiv, this.speed] = createRangeSlider(speedRangeDetails, 5, sliderDivYPos + 125);
       [this.amplitudeSliderDiv, this.amplitude] = createRangeSlider(amplitudeRangeDetails, 5, sliderDivYPos + 250);
       [this.waveLengthSliderDiv, this.waveLength] = createRangeSlider(waveLengthRangeDetails, 5, sliderDivYPos + 375);
@@ -617,7 +618,7 @@ class App extends React.Component {
     p5.noStroke();    
 
     this.text = this.input.value();
-    p5.textSize(this.fontSize.value());
+    p5.textSize(this.fontSize);
     // call effectHandler to draw the text
     p5.push();
     this.effectHandler(this.effectSelector, p5);
@@ -692,7 +693,7 @@ class App extends React.Component {
 
       this.languageSelector.position(30, 700);
 
-      this.fontSizeSliderDiv.position(5, window.innerHeight * 0.12);
+      // this.fontSizeSliderDiv.position(5, window.innerHeight * 0.12);
       this.speedSliderDiv.position(5, window.innerHeight * 0.24);
       this.amplitudeSliderDiv.position(5, window.innerHeight * 0.36);
       this.waveLengthSliderDiv.position(5, window.innerHeight * 0.48);
@@ -705,7 +706,7 @@ class App extends React.Component {
       
     }
     this.showSelectedMenuElements();
-    this.fontSizeSliderDiv.r;
+    // this.fontSizeSliderDiv.r;
   }
 
 /*
@@ -719,13 +720,13 @@ class App extends React.Component {
 
   p5.translate(window.innerWidth / 2, window.innerHeight / 2);
 
-  p5.translate(-(this.text.length - 1) * this.fontSize.value() / 2, 0);
+  p5.translate(-(this.text.length - 1) * this.fontSize / 2, 0);
 
   for (var i = 0; i < this.text.length; i++) {
     wave = p5.sin(p5.frameCount * this.speed.value() + i * this.waveLength.value()) * this.amplitude.value();
     p5.fill(this.fontColorPicker.color());
     p5.push();
-    p5.translate(i * this.fontSize.value(), 0);
+    p5.translate(i * this.fontSize, 0);
     p5.text(this.text.charAt(i), 0, wave).textStyle(this.selectedWeight);
     p5.pop();
   }
@@ -737,7 +738,7 @@ tanRotEffect = (p5) => {
 
     p5.rotate(p5.tan(p5.frameCount + i * this.amplitude.value()) * this.speed.value());
 
-    let spacing = this.fontSize.value();
+    let spacing = this.fontSize;
     p5.fill(this.fontColorPicker.color());
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 - i * spacing);
     p5.text(this.text, window.innerWidth / 2, window.innerHeight / 2 + i * spacing);
@@ -855,9 +856,14 @@ neonEffect = (p5) => {
 
   render() {
     return (
-      <div className="App">
-        <Sketch setup={this.setup} draw={this.draw} windowResized={this.windowResized}/>
-      </div>
+      <>
+        <div className="App">
+          <div className="knob">
+            <Knob min={-1000} max={500} radius={75} callbackFunction={(s)=> this.fontSize=s} id={"knob"} startValue={30}  color="#BB2649"/>
+          </div>
+          <Sketch setup={this.setup} draw={this.draw} windowResized={this.windowResized}/>
+        </div>
+      </>
     );
   }
 }
