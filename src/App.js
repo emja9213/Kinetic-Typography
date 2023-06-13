@@ -457,7 +457,7 @@ class App extends React.Component {
 
     this.bgColorPicker = p5.createColorPicker("#FBF0EA");
     this.fontColorPicker = p5.createColorPicker("#000000");
-    this.glowColorPicker = p5.createColorPicker("#ff0000");
+    this.glowColorPicker = p5.createColorPicker("#27BC9A");
 
     this.languageSelector = p5.createSelect();
     this.languages.forEach(languages => {
@@ -519,33 +519,38 @@ class App extends React.Component {
 
   drawOpenMenu(p5) {
     p5.fill(230, 200);
+    let vivaMagentaColor = p5.color(187,38,73);
+    let vivaMagentaColorLight = p5.color('#E26280');
     p5.rect(0, 0, 255, window.innerHeight); 
-    let x1 = 200, x2 = 255, width = x2 - x1; 
-    let y1 = 0, y2 = 35, height = y2 - y1; 
+    let x1 = 205, x2 = 263, width = x2 - x1 -10; 
+    let y1 = 0, y2 = 40, height = y2 - y1 -8; 
     // Color the close-button if hovered, then check if it is clicked.
     if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){ 
-      p5.fill(130);
+      p5.fill(vivaMagentaColor);
       if (p5.mouseIsPressed) {
         this.menuOpen = false;
         this.hideAllMenuElements();
       }
     }
     else {
-      p5.fill(180); // Color when not hovered.
+      p5.fill(vivaMagentaColorLight); // Color when not hovered.
     }
     // draw "close" button.
-    p5.rect(x1, 0, width, height, 0, 0, 0, 10);
+    p5.rect(x1, 0, width, height, 0, 0, 0, 7);
+    // rgb 187,38,73
     p5.fill(255);
-    p5.textSize(32);
-    p5.text('x', 228, 25);
+    p5.textSize(27);
+    p5.text('x', 230, 24);
   }
 
   drawClosedMenu(p5) {
-    let x1 = 0, x2 = 55, width = x2 - x1;
-      let y1 = 0, y2 = 35, height = y2 - y1;
+    let x1 = 0, x2 = 55, width = x2 - x1 - 10;
+    let y1 = 0, y2 = 35, height = y2 - y1 - 8;
+    let greenColor = p5.color('#27BC9A');
+    let greenColorLight = p5.color('#0DF1BB');
       // Color the open-button if hovered, then check if it is clicked.
       if ((p5.mouseX > x1) && (p5.mouseX < x2) && (p5.mouseY > y1) && (p5.mouseY < y2)){
-        p5.fill(130);
+        p5.fill(greenColorLight);
         if (p5.mouseIsPressed) {
           this.menuOpen = true;
           // TODO helper function for this and everything else here tbh 
@@ -553,13 +558,13 @@ class App extends React.Component {
         }
       }
       else {
-        p5.fill(180); // Color when not hovered.
+        p5.fill(greenColor); // Color when not hovered.
       }
       // draw "open" button.
       p5.rect(x1, 0, width, height, 0, 0, 10, 0);
       p5.fill(255);
-      p5.textSize(32);
-      p5.text('>', 27, 25); // very arbitrary values for centering, todo: fix 
+      p5.textSize(30);
+      p5.text('>', 23, 22); // very arbitrary values for centering, todo: fix 
   }
 
   drawOpenMenuMobile(p5) { // TODO: clean up! remove magic numbers, make proper variables for values, etc 
