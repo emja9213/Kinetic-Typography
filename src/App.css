@@ -1,5 +1,11 @@
 @import '@yaireo/ui-range';
 
+/* define color variables for blue and magenta*/
+:root {
+  --blue: #0366d6;
+  --viva-magenta: #BB2649;
+}
+
 .App {
   text-align: center;
 }
@@ -42,12 +48,9 @@
 /* Range Slider Styling */
 
 .range-slider {
-  /* --min: 32;
-  --max: 256; */
-  --value: 64;
-  --primary-color: #0366d6;
-  --step: 2;
+  --primary-color: var(--viva-magenta) !important;
   --show-min-max: block;
+  --ticks-height: 3px !important;
 
   width: 13rem;
 }
@@ -55,23 +58,31 @@
 .fontSize-range-slider {
   --min: 32;
   --max: 256;
-  --step: 2;
+  --step: 1 !important;
+  --value: 38;
+  --text-value: '38';
 }
 
 .speed-range-slider {
-  --min: 0.1 !important;
-  --max: 20 !important;
+  --min: 0.1;
+  --max: 20;
   --step: 0.1 !important;
+  --value: 2 !important;
+  --text-value: '2' !important;
 }
 
 .amplitude-range-slider {
-  --min: 1 !important;
-  --max: 512 !important;
+  --min: 1;
+  --max: 512;
   --step: 1 !important;
+  --value: 100;
+  --text-value: '100';
 }
 
 .waveLength-range-slider {
   --min: 1;
   --max: 128;
-  --step: 1;
+  --step: 1 !important;
+  --value: 16;
+  --text-value: '16';
 }

@@ -391,7 +391,11 @@ class App extends React.Component {
       sliderDiv.addClass(`range-slider ${classLabel}-range-slider`);
       sliderDiv.child(p5.createP(rangeDetails.label).style('padding', '1.5rem 0.7rem'));
       sliderDiv.position(posX, posY);
-      sliderDiv.style(`--min`, `${rangeDetails.min} !important`, `--max`, `${rangeDetails.max} !important`, `--value`, `${rangeDetails.defaultValue}`, `--text-value`, `${rangeDetails.defaultValue}`, `width`, `13rem`);
+      sliderDiv.style(`--min:${rangeDetails.min}`);
+      sliderDiv.style(`--max:${rangeDetails.max}`);
+      sliderDiv.style(`--value`, `${rangeDetails.defaultValue} !important`);
+      sliderDiv.style(`--text-value`, `"${rangeDetails.defaultValue}" !important`);
+      sliderDiv.style(`width`, `13rem`);
 
       const slider = p5.createSlider(rangeDetails.min, rangeDetails.max, rangeDetails.defaultValue, rangeDetails.step);
       slider.addClass('range');
@@ -451,7 +455,7 @@ class App extends React.Component {
 
     this.input = p5.createInput('Kinetic Typography');
 
-    this.bgColorPicker = p5.createColorPicker("#ffffff");
+    this.bgColorPicker = p5.createColorPicker("#FBF0EA");
     this.fontColorPicker = p5.createColorPicker("#000000");
     this.glowColorPicker = p5.createColorPicker("#ff0000");
 
@@ -465,9 +469,9 @@ class App extends React.Component {
     });
 
     //  Generate range sliders for each effect parameter
-    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 12, max: 256, defaultValue: 52, step: 1};
-    let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 3, step: 0.1};
-    let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 16, step: 1};
+    let fontSizeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'font-size'), min: 12, max: 256, defaultValue: 38, step: 1};
+    let speedRangeDetails = {label: this.getTranslation(this.currentLanguage, 'speed'), min: 0.1, max: 20, defaultValue: 2, step: 0.1};
+    let amplitudeRangeDetails = {label: this.getTranslation(this.currentLanguage, 'amplitude'), min: 1, max: 512, defaultValue: 100, step: 1};
     let waveLengthRangeDetails = {label: this.getTranslation(this.currentLanguage, 'wave-length'), min: 0, max: 128, defaultValue: 16, step: 1};
 
     const columnRight = window.innerWidth * 0.6;
