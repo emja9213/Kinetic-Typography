@@ -1,3 +1,6 @@
+# Kinetic Typography
+[![Deploy to Firebase Hosting on merge](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-merge.yml) [![Deploy to Firebase Hosting on PR](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-pull-request.yml/badge.svg)](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-pull-request.yml)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
