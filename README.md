@@ -30,6 +30,10 @@ install node.js: https://nodejs.org/en/download \
 install yaireo ui-range: `npm i @yaireo/ui-range` 
 (from https://github.com/yairEO/ui-range)
 
+Clone this repository, then from the project directory you can start it by running:
+### `npm start`
+Then open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
 <!-- Live Version URL -->
 # Live Version
 A live version of the current project based on the 'main' branch is available through the following url:
@@ -46,10 +50,6 @@ Mujtaba (~73 Hours):
 Emanuel Jansson (106 Hours)
 
 Bo Jakob Martin Kalling (? Hours)
-
-Clone this repository, then from the project directory you can start it by running:
-### `npm start`
-Then open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 <!-- Bugs and limitations-->
 ## Known Bugs
