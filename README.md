@@ -1,5 +1,6 @@
 # Kinetic Typography
-## 1MD003 User Interface Programming II Project VT2023
+
+[![Deploy to Firebase Hosting on merge](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-merge.yml) [![Deploy to Firebase Hosting on PR](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-pull-request.yml/badge.svg)](https://github.com/emja9213/Kinetic-Typography/actions/workflows/firebase-hosting-pull-request.yml)
 
 ## Group 3
 - Emanuel Jansson (time: 106h)
@@ -9,10 +10,6 @@
 ## Project Description
 
 Kinetic Typography can be described as 'moving text', an animation technique that mixes motion and text to express ideas using animated objects. The purpose of this application is to allow users interact with the system and explore various creative ideas by changing text animations, typefaces and other parameters as well as typing a custom text. There isn't a traditional "Reward" or "Ultimate goal" to this application, unlike many games or applications out there, rather here we have a medium in which tries to be a source of inspiration for the clients, as well as provide entertainment.
-
-## Running it online
-
-The main branch is deployed on Firebase, accessible on https://kinetic-typography-uu.web.app/
 
 ## Running it locally:
 
