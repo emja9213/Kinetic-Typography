@@ -49,7 +49,7 @@ Mujtaba (~73 Hours):
 
 Emanuel Jansson (106 Hours)
 
-Bo Jakob Martin Kalling (? Hours)
+Bo Jakob Martin Kalling (75 Hours)
 
 <!-- Bugs and limitations-->
 ## Known Bugs
